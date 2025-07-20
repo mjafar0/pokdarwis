@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('media_konten', function (Blueprint $table) {
-            $table->increments('media_konten_id');
-            $table->string('judul_konten', 255);
-            $table->enum('tipe_konten', ['video', 'photo']);
+            $table->id();
+            $table->string('judul_konten', 100);
+            $table->enum('tipe_konten', ['foto', 'video']);
             $table->enum('konten', ['produk', 'wisata']);
             $table->string('file_path', 255);
-            $table->unsignedInteger('product_id')->nullable();
-            $table->unsignedInteger('destinasi_wisata_id')->nullable();
+            $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('cascade');
+            $table->foreignId('destinasi_wisata_id')->nullable()->constrained('destinasi_wisata')->onDelete('cascade');
             $table->timestamps();
         });
     }

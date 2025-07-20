@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('destinasi_wisata', function (Blueprint $table) {
-            $table->increments('destinasi_wisata_id'); // INT(11) AUTO_INCREMENT
+            $table->id();
             $table->string('name_destinasi', 255);
-            $table->unsignedInteger('pokdarwis_id');
+            $table->foreignId('pokdarwis_id')->constrained('pokdarwis')->onDelete('cascade');
             $table->text('deskripsi')->nullable();
             $table->string('lokasi', 255)->nullable();
             $table->text('fasilitas')->nullable();

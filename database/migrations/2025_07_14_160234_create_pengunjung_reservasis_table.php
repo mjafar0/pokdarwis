@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengunjung_reservasi', function (Blueprint $table) {
-            $table->increments('pengunjung_reservasi_id');
-            $table->unsignedInteger('reservasi_id');
-            $table->string('name_pengunjung', 255);
+            $table->id();
+            $table->string('nama_pengunjung', 100);
+            $table->foreignId('reservasi_id')->constrained('reservasi')->onDelete('cascade');
             $table->timestamps();
         });
     }

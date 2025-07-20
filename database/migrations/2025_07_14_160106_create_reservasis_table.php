@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservasi', function (Blueprint $table) {
-            $table->increments('reservasi_id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('paket_wisata_id')->nullable();
-            $table->string('username', 255);
+            $table->id();
+            $table->string('nama_pemesan', 100);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('paket_wisata_id')->constrained('paket_wisata')->onDelete('cascade');
             $table->string('no_telp', 45);
             $table->string('email', 45);
             $table->date('tanggal_kunjungan');
-            $table->time('waktu_kunjungan');
+            $table->string('waktu_kunjungan', 45);
             $table->text('catatan')->nullable();
+            $table->longText('alasan_ditolak')->nullable();
             $table->enum('status', ['pending', 'diterima', 'ditolak', 'selesai'])->default('pending');
-            $table->text('alasan_ditolak')->nullable();
             $table->timestamps();
         });
     }

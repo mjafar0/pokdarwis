@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('product_id'); // primary key
-            $table->string('name_product', 255);
-            $table->unsignedInteger('pokdarwis_id');
-            $table->text('deskripsi_product')->nullable();
-            $table->decimal('harga_product', 10, 0)->nullable();
+            $table->id();
+            $table->string('name_product', 100);
+            $table->longText('deskripsi')->nullable();
+            $table->decimal('harga_product', 10, 2)->nullable();
             $table->string('img', 255)->nullable();
-            $table->string('detail_tambahan', 255)->nullable();
+            $table->longText('detail_tambahan')->nullable();
+            $table->foreignId('pokdarwis_id')->constrained('pokdarwis')->onDelete('cascade');
             $table->timestamps();
         });
     }

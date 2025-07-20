@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ai_generate', function (Blueprint $table) {
-            $table->increments('ai_generated_id');
-            $table->text('prompt_text');
-            $table->text('hasil_text')->nullable();
-            $table->unsignedInteger('pokdarwis_id')->nullable();
+            $table->id();
+            $table->longText('prompt_text');
+            $table->longText('result_text');
+            $table->foreignId('pokdarwis_id')->constrained('pokdarwis')->onDelete('cascade');
             $table->timestamps();
         });
     }
