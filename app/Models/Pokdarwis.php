@@ -2,9 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pokdarwis extends Model
 {
-    //
+    use HasFactory;
+
+    protected $table = 'pokdarwis';
+
+    protected $fillable = [
+        'user_id',
+        'name_pokdarwis',
+        'lokasi',
+        'deskripsi',
+        'kontak',
+        'deskripsi',
+    ];
+
+    /**
+     * Relasi balik ke User (One to One)
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

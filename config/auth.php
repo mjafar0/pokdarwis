@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'pokdarwis' => [
+            'driver' => 'session',
+            'provider' => 'pokdarwis',
+        ],
     ],
 
     /*
@@ -63,6 +68,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        'pokdarwis' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pokdarwis::class,
         ],
 
         // 'users' => [
