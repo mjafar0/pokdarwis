@@ -520,8 +520,7 @@
                         });
                         </script>
                         @endpush --}}
-
-
+                        
                 </div>
             </div>
         </div>

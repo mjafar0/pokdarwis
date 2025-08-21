@@ -26,10 +26,14 @@ class AiGenerateController extends Controller
             'language' => 'nullable|in:id,en',
         ]);
 
+        $maxWords = 75;
+        $minWords = 5;
+        // $maxTokens = (int) ceil($maxWords * 1.6);
+
         $lang   = $data['language'] ?? 'id';
         $system = $lang === 'id'
-            ? 'Kamu copywriter pariwisata/UMKM. Tulis teks promosi persuasif, jujur, tanpa emoji & tanpa info kontak. 120–180 kata.'
-            : 'You are a tourism/SME copywriter. Write a persuasive but honest promo text, no emojis, no contact info. 120–180 words.';
+            ? "Kamu copywriter pariwisata/UMKM. TULIS MAKSIMUM {$maxWords} kata (ideal {$minWords}–{$maxWords}). Teks persuasif namun jujur, tanpa emoji dan tanpa info kontak. Gunakan 1 paragraf."
+            : "You are a tourism/SME copywriter. WRITE AT MOST {$maxWords} words (ideal {$minWords}-{$maxWords}). Persuasive but honest, no emojis, no contact info. Use one paragraph.";
 
         $payload = [
             'model' => config('services.openai.model', 'gpt-3.5-turbo-0125'),
@@ -38,6 +42,7 @@ class AiGenerateController extends Controller
                 ['role' => 'user',   'content' => $data['prompt']],
             ],
             'temperature' => 0.8,
+            // 'max_tokens' => $maxTokens
         ];
 
         $resp = Http::withToken(config('services.openai.key'))
@@ -68,55 +73,55 @@ class AiGenerateController extends Controller
         return view('ai.generate'); // resources/views/ai/generate.blade.php
     }
 
-    public function generate(Request $req)
-    {
-        $data = $req->validate([
-            'prompt'   => 'required|string|max:1000',
-            'language' => 'nullable|in:id,en',
-        ]);
+    // public function generate(Request $req)
+    // {
+    //     $data = $req->validate([
+    //         'prompt'   => 'required|string|max:1000',
+    //         'language' => 'nullable|in:id,en',
+    //     ]);
 
-        $lang = $data['language'] ?? 'id';
-        $system = $lang === 'id'
-            ? 'Kamu copywriter pariwisata. Tulis teks promosi persuasif, jujur, tanpa emoji & tanpa info kontak. Panjang ±120–180 kata.'
-            : 'You are a tourism copywriter. Write a persuasive but honest promo text, no emojis or contact info. Length ~120–180 words.';
+    //     $lang = $data['language'] ?? 'id';
+    //     $system = $lang === 'id'
+    //         ? 'Kamu copywriter pariwisata. Tulis teks promosi persuasif, jujur, tanpa emoji & tanpa info kontak. Panjang ±120–180 kata.'
+    //         : 'You are a tourism copywriter. Write a persuasive but honest promo text, no emojis or contact info. Length ~120–180 words.';
 
-        // Panggil OpenAI (boleh ganti model via .env)
-        $payload = [
-            'model' => config('services.openai.model', 'gpt-3.5-turbo-0125'),
-            'messages' => [
-                ['role' => 'system', 'content' => $system],
-                ['role' => 'user',   'content' => $data['prompt']],
-            ],
-            'temperature' => 0.8,
-        ];
+    //     // Panggil OpenAI (boleh ganti model via .env)
+    //     $payload = [
+    //         'model' => config('services.openai.model', 'gpt-3.5-turbo-0125'),
+    //         'messages' => [
+    //             ['role' => 'system', 'content' => $system],
+    //             ['role' => 'user',   'content' => $data['prompt']],
+    //         ],
+    //         'temperature' => 0.8,
+    //     ];
 
-        $resp = Http::withToken(config('services.openai.key'))
-            ->timeout(30)
-            ->post('https://api.openai.com/v1/chat/completions', $payload);
+    //     $resp = Http::withToken(config('services.openai.key'))
+    //         ->timeout(30)
+    //         ->post('https://api.openai.com/v1/chat/completions', $payload);
 
-        if ($resp->failed()) {
-            return response()->json([
-                'ok' => false,
-                'message' => 'Gagal generate',
-                'error' => $resp->json(),
-            ], 422);
-        }
+    //     if ($resp->failed()) {
+    //         return response()->json([
+    //             'ok' => false,
+    //             'message' => 'Gagal generate',
+    //             'error' => $resp->json(),
+    //         ], 422);
+    //     }
 
-        $text = $resp->json('choices.0.message.content') ?? '';
+    //     $text = $resp->json('choices.0.message.content') ?? '';
 
-        // SIMPAN ke tabel ai_generate (sesuai struktur screenshot)
-        $row = AiGenerate::create([
-            'prompt_text'  => $data['prompt'],
-            'result_text'  => $text,                // simpan teks promosi utuh
-            'pokdarwis_id' => $req->user()->id,     // id user yg login
-        ]);
+    //     // SIMPAN ke tabel ai_generate (sesuai struktur screenshot)
+    //     $row = AiGenerate::create([
+    //         'prompt_text'  => $data['prompt'],
+    //         'result_text'  => $text,                // simpan teks promosi utuh
+    //         'pokdarwis_id' => $req->user()->id,     // id user yg login
+    //     ]);
 
-        return response()->json([
-            'ok'   => true,
-            'id'   => $row->id,
-            'text' => $text,
-        ]);
-    }
+    //     return response()->json([
+    //         'ok'   => true,
+    //         'id'   => $row->id,
+    //         'text' => $text,
+    //     ]);
+    // }
     
     public function index(Request $req)
     {
