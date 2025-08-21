@@ -12,7 +12,7 @@ class PokdarwisController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.pokdarwis');
     }
 
     /**
