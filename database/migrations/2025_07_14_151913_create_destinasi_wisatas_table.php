@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('destinasi_wisata', function (Blueprint $table) {
             $table->id();
             $table->string('name_destinasi', 255);
-            $table->foreignId('pokdarwis_id')->constrained('pokdarwis')->onDelete('cascade');
             $table->text('deskripsi')->nullable();
             $table->string('lokasi', 255)->nullable();
             $table->text('fasilitas')->nullable();
             $table->text('img')->nullable();
             $table->timestamps();
+            
+            // $table->foreignId('pokdarwis_id')->constrained('pokdarwis')->onDelete('cascade');
         });
     }
 

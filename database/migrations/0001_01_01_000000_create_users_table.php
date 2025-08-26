@@ -14,10 +14,20 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->char('gender', 1)->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->char('nik', 16)->nullable();
+            $table->char('nomor_passport', 16)->nullable();
+            $table->char('jenis_wisatawan', 3)->default('WNI');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('nomor_hp', 20)->nullable();
+            $table->string('id_wilayah', 8)->nullable();
+            $table->string('alamat', 100)->nullable();
+            $table->string('kode_pos', 100)->nullable();
             $table->string('role')->nullable();
             $table->string('password');
+            
             $table->rememberToken();
             $table->timestamps();
         });
