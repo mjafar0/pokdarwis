@@ -26,8 +26,8 @@ class AiGenerateController extends Controller
             'language' => 'nullable|in:id,en',
         ]);
 
-        $maxWords = 75;
-        $minWords = 5;
+        $maxWords = 50;
+        $minWords = 10;
         // $maxTokens = (int) ceil($maxWords * 1.6);
 
         $lang   = $data['language'] ?? 'id';

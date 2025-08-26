@@ -27,4 +27,9 @@ class Pokdarwis extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function paketWisata()
+    {
+        return $this->hasMany(PaketWisata::class, 'pokdarwis_id');
+    }
 }

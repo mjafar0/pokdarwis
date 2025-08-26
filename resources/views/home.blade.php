@@ -1,18 +1,104 @@
-<x-app-layout>
-  <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{-- {{ __('Dashboard') }} --}}
-        </h2>
-  </x-slot>
+@extends('layouts.app')
 
-  <div class="py-12">
-        {{-- disini edit konten dashboard --}}
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("Welcome to Home") }}
-                </div>
+@section('title','Home')
+
+@section('banner')
+  <x-banner :slides="
+  [
+
+      ['image'=>'assets/images/banner-img1.jpg',
+      'title'=>'JOURNEY TO EXPLORE WORLD',
+      'text'=>'WELCOME',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+      
+      ['image'=>'assets/images/guruntelagabiru.jpg',
+      'title'=>'BEAUTIFUL PLACE TO VISIT',
+      'text'=>'...',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'BEAUTIFUL PLACE TO VISIT',
+      'text'=>'...',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'BEAUTIFUL PLACE TO VISIT',
+      'text'=>'...',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'BEAUTIFUL PLACE TO VISIT',
+      'text'=>'...',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'BEAUTIFUL PLACE TO VISIT',
+      'text'=>'...',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'BEAUTIFUL PLACE TO VISIT',
+      'text'=>'...',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'BEAUTIFUL PLACE TO VISIT',
+      'text'=>'...',
+      'primaryHref'=>route('pokdarwis'),
+      'primaryText'=>'EXPLORE'],
+  ]" class="mb-5"/>
+
+@endsection
+
+@section('main')
+
+    {{-- Produk Card --}}
+        <x-product-card
+            subtitle="UNCOVER PLACE"
+            title="POPULAR PRODUCT"
+            text="Produk-produk pilihan dari berbagai Pokdarwis."
+            :items="$items"
+            ctaHref="{{ url('/destination') }}"
+            ctaText="More Destination"
+        />
+
+@endsection
+
+        <!-- ***home banner html end here*** -->
+    
+        <!-- ***Home search field html start from here*** -->
+        {{-- <div class="home-trip-search primary-bg">
+            <div class="container">
+                <form method="get" class="trip-search-inner d-flex">
+                    <div class="group-input">
+                        <label> Search Destination* </label>
+                        <input type="text" name="q" placeholder="Enter Destination">
+                    </div>
+                    <div class="group-input">
+                        <label> Pax Number* </label>
+                        <input type="number" min="1" name="pax" placeholder="No.of People">
+                    </div>
+                    <div class="group-input width-col-3">
+                        <label> Checkin Date* </label>
+                        <i class="far fa-calendar"></i>
+                        <input class="input-date-picker" type="text" name="checkin" placeholder="MM / DD / YY" autocomplete="off" readonly>
+                    </div>
+                    <div class="group-input width-col-3">
+                        <label> Checkout Date* </label>
+                        <i class="far fa-calendar"></i>
+                        <input class="input-date-picker" type="text" name="checkout" placeholder="MM / DD / YY" autocomplete="off" readonly>
+                    </div>
+                    <div class="group-input width-col-3">
+                        <input type="submit" value="INQUIRE NOW">
+                    </div>
+                </form>
             </div>
-        </div>
-    </div>
-</x-app-layout>
+        </div> --}}
+        <!-- ***search field html end here*** -->
