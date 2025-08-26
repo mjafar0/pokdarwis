@@ -48,6 +48,7 @@ Route::get('/pokdarwis/{id}', [PokdarwisController::class, 'show'])->name('pokda
 // Produk (detail)
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
+require __DIR__ . '/auth.php';
 
 
 
