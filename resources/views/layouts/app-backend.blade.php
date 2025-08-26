@@ -92,10 +92,6 @@
                     <div class="header-btn">
                         <a href="{{ url('/login') }}" class="round-btn">LOGIN</a>
                     </div>
-                    
-                    <div class="header-btn">
-                        <a href="{{ url('/register') }}" class="round-btn">REGISTER</a>
-                    </div>
                 </div>
             </div>
         </div>
