@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+use Spatie\Permission\Traits\HasRoles;
+
+class User extends Authenticatable 
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
+
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +22,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'gender',
+        'tanggal_lahir',
+        'nik',
+        'nomor_passport',
+        'jenis_wisatawan',
         'email',
+        'nomor_hp',
+        'id_wilayah',
+        'alamat',
+        'kode_pos',
         'password',
         'role'
     ];
@@ -49,7 +61,7 @@ class User extends Authenticatable
     }
 
     public function pokdarwis()
-        {
-            return $this->hasOne(Pokdarwis::class,'user_id');
-        }
+    {
+        return $this->hasOne(Pokdarwis::class,'user_id');
+    }
 }
