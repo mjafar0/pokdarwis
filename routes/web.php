@@ -42,8 +42,6 @@ Route::get('/tour/{pokdarwis:slug}', [PokdarwisController::class, 'show'])
 
 Route::get('/tour/{id}', [PokdarwisController::class, 'show'])->name('pokdarwis.show');
 
-
-
 Route::get('/pokdarwis/{id}', [PokdarwisController::class, 'show'])->name('pokdarwis.show');
 
 
