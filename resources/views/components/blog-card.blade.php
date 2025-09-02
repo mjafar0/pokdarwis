@@ -24,12 +24,12 @@
       <div class="post-btn">
         <a href="{{ $url }}" class="round-btn">Read More</a>
       </div>
-      <div class="meta-comment">
+      {{-- <div class="meta-comment">
         <a href="{{ $url }}">
           <i class="fas fa-comment"></i>
           <span>{{ $commentsCount }}</span>
         </a>
-      </div>
+      </div> --}}
     </div>
   </div>
 </article>

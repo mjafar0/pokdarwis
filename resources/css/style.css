@@ -494,11 +494,12 @@ table {
   font-size: 15px;
 }
 table thead tr {
-  background-color: #262626;
+  background-color: #f40505;
 }
 table thead tr th {
-  color: #383838;
+  color: #f80303;
 }
+
 table.table {
   color: #737373;
 }

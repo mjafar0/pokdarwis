@@ -116,7 +116,7 @@
                               <span class="posted-on">
                                 {{ optional($rp->published_at instanceof \Carbon\Carbon ? $rp->published_at : \Carbon\Carbon::parse($rp->published_at))->format('M d, Y') }}
                               </span>
-                              <span class="comments-link">{{ $rp->comments_count ?? 0 }} Comments</span>
+                              {{-- <span class="comments-link">{{ $rp->comments_count ?? 0 }} Comments</span> --}}
                             </div>
                           </div>
                         </li>

@@ -41,72 +41,74 @@
 <body>
 
     {{-- HEADER (tetap, reusable) --}}
-    <header id="masthead" class="site-header">
-        <div class="top-header">
-            <div class="container">
-                <div class="top-header-inner">
-                    <div class="header-contact text-left">
-                        <a href="tel:01977259912">
-                            <i aria-hidden="true" class="icon icon-phone-call2"></i>
-                            <div class="header-contact-details">
-                                <span class="contact-label">For Further Inquires :</span>
-                                <h5 class="header-contact-no">+01 (977) 2599 12</h5>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="site-logo text-center">
-                        <h1 class="site-title">
-                            <a href="{{ url('/') }}">
-                                <img src="{{ asset('assets/images/site-logo.png') }}" alt="Logo">
+    <div>
+        <header id="masthead" class="site-header">
+            <div class="top-header">
+                <div class="container">
+                    <div class="top-header-inner">
+                        <div class="header-contact text-left">
+                            <a href="tel:01977259912">
+                                <i aria-hidden="true" class="icon icon-phone-call2"></i>
+                                <div class="header-contact-details">
+                                    <span class="contact-label">For Further Inquires :</span>
+                                    <h5 class="header-contact-no">+01 (977) 2599 12</h5>
+                                </div>
                             </a>
-                        </h1>
-                    </div>
-
-                    <div class="header-icon text-right">
-                        <div class="header-search-icon d-inline-block">
-                            <a href="#"><i aria-hidden="true" class="fas fa-search"></i></a>
                         </div>
-                        <div class="offcanvas-menu d-inline-block">
-                            <a href="#"><i aria-hidden="true" class="icon icon-burger-menu"></i></a>
+    
+                        <div class="site-logo text-center">
+                            <h1 class="site-title">
+                                <a href="{{ url('/') }}">
+                                    <img src="{{ asset('assets/images/site-logo.png') }}" alt="Logo">
+                                </a>
+                            </h1>
+                        </div>
+    
+                        <div class="header-icon text-right">
+                            <div class="header-search-icon d-inline-block">
+                                <a href="#"><i aria-hidden="true" class="fas fa-search"></i></a>
+                            </div>
+                            <div class="offcanvas-menu d-inline-block">
+                                <a href="#"><i aria-hidden="true" class="icon icon-burger-menu"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="bottom-header">
-            <div class="container">
-                <div class="bottom-header-inner d-flex justify-content-between align-items-center">
-                    
-
-                    {{-- Navigation Bar --}}
-                    <x-navbar-admin active="home">
-
-                    </x-navbar-admin>
-
-                    <div class="header-btn">
-                        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="round-btn">LOGOUT</button>
-                        </form>
+    
+                <div class="container">
+                    <div class="bottom-header-inner d-flex justify-content-between align-items-center">
+                        
+    
+                        {{-- Navigation Bar --}}
+                        <x-navbar-admin active="home">
+    
+                        </x-navbar-admin>
+    
+                        <div class="header-btn">
+                            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="round-btn">LOGOUT</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="mobile-menu-container"></div>
-    </header>
+    
+            <div class="mobile-menu-container"></div>
+        </header>
+    </div>
 
     {{-- MAIN (isi dari child) --}}
-    <main id="content" class="site-main">
+    <main id="content" class="container site-main">
         {{-- Banner --}}
         @hasSection('banner')
             @yield('banner')
         @endif
-        <div class="page-header">
+        
+        <div class="page-header admin-header">
             @yield("page-header")
         </div>
+
         <div class="page-description">
             @yield("page-description")
         </div>
@@ -114,6 +116,7 @@
         <div class="page-breadcrumb">
             @yield("page-breadcrumb")
         </div>
+
         <div class="container">
             @yield('main')
         </div>
@@ -138,7 +141,26 @@
                         </div>
 
                         
-                    
+                    <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Rizky</td>
+                        <td>Email</td>
+                        <td>Rizky</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
                         <div class="col-lg-3 col-sm-6">
                             <aside class="widget widget_latest_post widget-post-thumb">
                                 <h3 class="widget-title">RECENT POST</h3>

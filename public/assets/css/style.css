@@ -1946,6 +1946,25 @@ input[type=submit]:focus {
   }
 }
 
+.admin-header {
+  margin-top: 150px;
+}
+
+  .admin-header       { margin-bottom: 18px; }
+  .admin-page-header  { padding: 14px 18px; background:#f7f9fc; border:1px solid #e6ebf2; border-radius:12px; }
+  .admin-page-header h1{ font-size:26px; margin:0; }
+  .admin-page-actions .btn{ border-radius: 999px; }
+
+  .admin-page-desc    { margin-bottom:14px; color:#6c757d; }
+  .admin-page-desc p  { margin:0; }
+
+  .admin-breadcrumb   { background:#fff; border:1px solid #eef1f6; border-radius:12px; padding:8px 14px; }
+  .breadcrumb         { margin:0; background:transparent; }
+  .breadcrumb-item + .breadcrumb-item::before { content: "›"; }
+
+
+
+
 /*--------------------------------------------------------------
 >>> Main Header Menu
 ----------------------------------------------------------------*/
