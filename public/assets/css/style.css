@@ -1766,7 +1766,7 @@ input[type=submit]:focus {
 }
 
 .header-contact * {
-  color: #ffffff;
+  color: #fd1111;
 }
 .header-contact a {
   display: -webkit-box;
@@ -1991,7 +1991,7 @@ input[type=submit]:focus {
   display: none;
 }
 .navigation-container ul > li > a {
-  color: #ffffff;
+  color: #f01212;
   display: inline-block;
   font-size: 16px;
   padding: 20px 0;

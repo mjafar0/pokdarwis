@@ -76,7 +76,6 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
             <ul>
               <li><a href="#">Roles</a></li>
               <li><a href="#">Permissions</a></li>
-              <li><hr></li>
               <li><a href="#">Superadmin</a></li>
               <li><a href="#">Pokdarwis</a></li>
               <li><a href="#">Wisatawan</a></li>
