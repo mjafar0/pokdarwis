@@ -90,7 +90,10 @@
                     </x-navbar-admin>
 
                     <div class="header-btn">
-                        <a href="{{ url('/login') }}" class="round-btn">LOGOUT</a>
+                        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="round-btn">LOGOUT</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -138,7 +141,7 @@
     
 
     {{-- FOOTER (tetap, reusable) --}}
-    <footer id="colophon" class="site-footer footer-primary">
+    {{-- <footer id="colophon" class="site-footer footer-primary">
         <div class="top-footer">
             <div class="container">
                 <div class="upper-footer">
@@ -267,7 +270,7 @@
                 <div class="copy-right text-center">Copyright &copy; 2022 Traveler. All rights reserved.</div>
             </div>
         </div>
-    </footer>
+    </footer> --}}
 
     <!-- back to top -->
     <a id="backTotop" href="#" class="to-top-icon"><i class="fas fa-chevron-up"></i></a>
