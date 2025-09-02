@@ -10,6 +10,12 @@ return Application::configure(basePath: dirname(__DIR__))
         api: base_path('routes/api.php'),
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
+        then: function () {
+            //routing data master
+            Route::middleware(['web', 'auth'])
+            ->prefix('admin')
+            ->group(base_path('routes/r_admin.php'));
+        }
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([

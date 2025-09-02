@@ -85,12 +85,12 @@
                     </div>
 
                     {{-- Navigation Bar --}}
-                    <x-navbar active="home">
+                    <x-navbar-admin active="home">
 
-                    </x-navbar>
+                    </x-navbar-admin>
 
                     <div class="header-btn">
-                        <a href="{{ url('/login') }}" class="round-btn">LOGIN</a>
+                        <a href="{{ url('/login') }}" class="round-btn">LOGOUT</a>
                     </div>
                 </div>
             </div>
