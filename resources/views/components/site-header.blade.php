@@ -50,8 +50,8 @@
         </div>
 
         {{-- navbar kamu --}}
-        {{-- <x-navbar :active="$active" /> --}}
-        <x-navbar :pokdarwis="$pokdarwis ?? null" active="packages" />
+        <x-navbar :pokdarwis="$pokdarwis ?? null" :active="$active" />
+        {{-- <x-navbar :pokdarwis="$pokdarwis ?? null" active="packages" /> --}}
 
         <div class="header-btn">
           <a href="{{ $bookHref }}" class="round-btn">{{ $bookText }}</a>

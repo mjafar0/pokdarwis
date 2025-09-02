@@ -1,6 +1,6 @@
 @props([
   'pokdarwis' => null,
-  'active' => null, // 'home'|'about'|'destination'|'packages'|'pages'|'contact'
+  'active' => null, // 'home'|'gallery'|'tour'|'packages'|'pages'|'contact'|'blog'
 ])
 
 @php
@@ -14,10 +14,24 @@ $rl = function (string $name, $params = [], string $fallback = '#') {
 };
 
 $hrefHome    = $slug ? $rl('pdw.home', ['slug' => $slug], url('/home'))           : url('/home');
-$hrefAbout   = $slug ? $rl('pdw.about', ['slug' => $slug], url('/pokdarwis'))     : url('/pokdarwis');
-$hrefDest    = $slug ? $rl('pdw.destinations', ['slug' => $slug], '/gallery')        : url('/gallery');
+// $hrefTour   = $slug ? $rl('pdw.tour', ['slug' => $slug], url('pokdarwis.show', ['pokdarwis' => $slug]))     : url('pokdarwis.show', ['pokdarwis' => $slug]);
+$hrefTour = Route::has('pokdarwis.index')
+    ? route('pokdarwis.index')
+    : url('/tour');
+$activeTourByRoute = (Route::is('pokdarwis.show') || Route::is('pokdarwis.*')) ? 'menu-active' : '';
+/** PENANDA ITEM DROPDOWN YANG SEDANG AKTIF */
+$isTourCurrent = function ($pd) use ($pokdarwis) {
+    return ($pokdarwis && ($pokdarwis->id === $pd->id)) ? 'current-menu-item' : '';
+};
+
+
+
+
+$hrefDest    = $slug ? $rl('pdw.gallery', ['slug' => $slug], '/gallery')        : url('/gallery');
 $hrefProd    = $slug ? $rl('pdw.products', ['slug' => $slug], '#')            : '#';
+$hrefPages = $slug ? $rl('pdw.pages', ['slug' => $slug], url('/blogarchive')) : url('/blogarchive');
 $hrefContact = $slug ? $rl('pdw.contact', ['slug' => $slug], url('/contact')) : url('/contact');
+
 
 $isActive = fn ($name) => $active === $name ? 'menu-active' : '';
 
@@ -38,10 +52,11 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
     <ul>
       <li class="{{ $isActive('home') }}"><a href="{{ $hrefHome }}">Home</a></li>
       {{-- <li class="{{ $isActive('about') }}"><a href="{{ $hrefAbout }}">about us</a></li> --}}
-      <li class="{{ $isActive('destination') }}"><a href="{{ $hrefDest }}">Gallery</a></li>
-
-      <li class="menu-item-has-children {{ $isActive('packages') }}">
-        <a href="#!">tour</a>
+      <li class="{{ $isActive('gallery') }}"><a href="{{ $hrefDest }}">Gallery</a></li>
+      
+      {{-- TOUR: aktif jika active="tour" ATAU route sekarang pokdarwis.show --}}
+      <li class="menu-item-has-children {{ $isActive('tour') ?: $activeTourByRoute }}">
+        <a href="{{ $hrefTour }}">tour</a>
         <ul>
           @forelse(($pokdarwisMenu ?? []) as $pd)
             <li class="{{ $isTourCurrent($pd) }}">
@@ -53,10 +68,11 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
         </ul>
       </li>
 
+
       <li class="menu-item-has-children {{ $isActive('pages') }}">
         <a href="#">Pages</a>
         <ul>
-          <li><a href="#">Service</a></li>
+          {{-- <li><a href="#">Service</a></li>
           <li class="menu-item-has-children">
             <a href="#">Career</a>
             <ul>
@@ -65,20 +81,20 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
             </ul>
           </li>
           <li><a href="#">Tour guide</a></li>
-          <li><a href="#">Gallery page</a></li>
-          <li class="menu-item-has-children">
+          <li><a href="#">Gallery page</a></li> --}}
+          <li class="menu-item-has-children {{ $isActive('blog') }}">
             <a href="#">Blog</a>
             <ul>
-              <li><a href="#">Blog archive</a></li>
-              <li><a href="#">blog single</a></li>
+              <li><a href="{{ route('posts.index') }}">Blog archive</a></li>
+              {{-- <li><a href="#">blog single</a></li> --}}
             </ul>
           </li>
-          <li><a href="#">Single Page</a></li>
+          {{-- <li><a href="#">Single Page</a></li>
           <li><a href="#">Testimonial</a></li>
           <li><a href="#">Faq Page</a></li>
           <li><a href="#">Search Page</a></li>
           <li><a href="#">404 Page</a></li>
-          <li><a href="#">Comming Soon Page</a></li>
+          <li><a href="#">Comming Soon Page</a></li> --}}
         </ul>
       </li>
 

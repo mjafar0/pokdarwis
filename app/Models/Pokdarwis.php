@@ -14,6 +14,7 @@ class Pokdarwis extends Model
     protected $fillable = [
         'user_id',
         'name_pokdarwis',
+        'slug',
         'lokasi',
         'deskripsi',
         'kontak',
@@ -31,5 +32,15 @@ class Pokdarwis extends Model
     public function paketWisata()
     {
         return $this->hasMany(PaketWisata::class, 'pokdarwis_id');
+    }
+
+    public function mediaKonten()
+    {
+        return $this->hasMany(\App\Models\MediaKonten::class);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

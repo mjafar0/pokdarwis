@@ -1,54 +1,47 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;   
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaketWisataController;
 use App\Http\Controllers\PokdarwisController;
 use App\Http\Controllers\ProductController;
+use App\Models\Pokdarwis;
 
-// Halaman welcome (opsional, hapus kalau tidak dipakai)
-Route::get('/welcome', function () {
-    return view('welcome');
-});
-
-// Homepage → ambil produk acak (HomeController@index)
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-// alias /home ke halaman utama juga (supaya $items tetap ada)
 Route::get('/home', [HomeController::class, 'index']);
 
-// Halaman pokdarwis (masih statis sekarang)
-// Route::get('/pokdarwis', function () {
-//     return view('pokdarwis');
-// })->name('pokdarwis');
+// Index
 Route::get('/pokdarwis', [PokdarwisController::class, 'index'])->name('pokdarwis');
 
-Route::get('/gallery', function () {
-    return view('gallery');
-})->name('gallery');
+// Detail pakai slug
+Route::get('/tour/{pokdarwis:slug}', [PokdarwisController::class, 'show'])
+    ->name('pokdarwis.show');
 
-// Detail Paket & Paket Wisata
-Route::get('/detailpaket', function () {
-    return view('detailpaket');
-})->name('detailpaket');
+// (opsional tapi sangat membantu) redirect kalau ada yang ngetik ID:
+Route::get('/tour/{id}', function ($id) {
+    $pd = Pokdarwis::findOrFail($id);
+    return redirect()->route('pokdarwis.show', ['pokdarwis' => $pd->slug]);
+})->whereNumber('id');
 
 // Paket Wisata
 Route::get('/paket', [PaketWisataController::class, 'index'])->name('paket.index');
 Route::get('/paket/{paket:slug}', [PaketWisataController::class, 'show'])->name('paket.show');
 
-// Tour Wisata
-Route::get('/tour/{pokdarwis:slug}', [PokdarwisController::class, 'show'])
-     ->name('pokdarwis.show');
-
-Route::get('/tour/{id}', [PokdarwisController::class, 'show'])->name('pokdarwis.show');
-
-Route::get('/pokdarwis/{id}', [PokdarwisController::class, 'show'])->name('pokdarwis.show');
-
-
-// Produk (detail)
+// Produk
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
-require __DIR__ . '/auth.php';
+// Gallery (cukup satu)
+Route::get('/gallery', [GalleryController::class, 'index'])
+     ->name('gallery');
+
+// Blog
+Route::get('/blogarchive', [BlogController::class, 'index'])->name('posts.index');
+Route::get('/blogarchive/{slug}', [BlogController::class, 'show'])->name('posts.show');
+
+
+require __DIR__.'/auth.php';
 
 
 

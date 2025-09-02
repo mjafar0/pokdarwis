@@ -116,11 +116,22 @@
                     {{ $pakets->links() }}
                   </div>
                 @endif
-
-                {{-- Produk Card --}}
-                <x-product-card :items="$items">
-
-                </x-product-card>
+                
+                <div class="row">
+                     <div class="col-lg-8 ">
+                        <div class="section-heading">
+                           <h2 class="section-title">OUR PRODUCTS</h2>
+                           <p>Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque laudantium. Sit ornare mollitia tenetur, aptent.</p>
+                        </div>
+                     </div>
+                  </div>
+                <x-product-card
+                  class="pt-0 mt-2 "      {{-- hilangkan padding/margin atas section --}}
+                  subtitle="UNCOVER PLACE"
+                  title="POPULAR PRODUCT"
+                  text="Produk-produk pilihan dari berbagai Pokdarwis."
+                  :items="$items"
+                />
 
                 <div class="col-lg-8 offset-lg-2 text-sm-center">
                         <div class="section-heading">
@@ -130,7 +141,11 @@
                         </div>
                      </div>
 
-                <x-gallery-card :items="
+                     <x-gallery-card :items="$galleryItems" gallery="pokdarwis-{{ $pokdarwis->id }}" class="my-5" />
+                
+                <div class="grid blog-inner row">
+                
+                      {{-- <x-gallery-card :items="
                     [
                         ['src' => 'assets/images/guruntelagabiru.jpg','alt'=>'Pantai'],
                         ['src' => 'assets/images/img11.jpg','alt'=>'Gunung'],
@@ -141,9 +156,7 @@
                         ['src' => 'assets/images/img12.jpg','alt'=>'Hutan'],
                         ['src' => 'assets/images/img13.jpg','alt'=>'Danau'],
                     ]" gallery="wisata-gallery" class="my-5" 
-                />
-      
-
+                /> --}}
       </div>
     </div>
   </section>

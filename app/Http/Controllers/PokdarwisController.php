@@ -6,57 +6,59 @@ use App\Models\PaketWisata;
 use App\Models\Pokdarwis;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str; // <-- penting: agar bisa pakai Str::startsWith
 
 class PokdarwisController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List awal (opsional).
      */
     public function index()
     {
-        // return view('dashboard.pokdarwis');
-        $pakets = PaketWisata::where('pokdarwis_id', 6) // filter sesuai kebutuhanmu
-                    ->latest('id')
-                    ->paginate(6);
+        // contoh: default ambil paket milik pokdarwis id=6
+        $pakets = PaketWisata::where('pokdarwis_id', 6)
+            ->latest('id')
+            ->paginate(6);
 
-        // kirim $pakets ke view pokdarwis.blade.php
-        return view('pokdarwis', compact('pakets'));
-        
+        // menu pokdarwis untuk navbar TOUR
+        $pokdarwisMenu = Pokdarwis::orderBy('name_pokdarwis')
+            ->get(['id','name_pokdarwis','slug']);
+
+        return view('pokdarwis', compact('pakets', 'pokdarwisMenu'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Halaman detail pokdarwis tertentu.
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
     public function show($id)
     {
         $pokdarwis = Pokdarwis::findOrFail($id);
 
-        // paket wisata milik pokdarwis ini
-        $pakets = $pokdarwis->paketWisata()
+        // Paket wisata milik pokdarwis ini
+        $pakets = PaketWisata::where('pokdarwis_id', $pokdarwis->id)
             ->latest('id')
             ->paginate(6);
 
-        // produk (opsional) untuk <x-product-card>
+        // Produk milik pokdarwis ini untuk <x-product-card>
         $products = Product::where('pokdarwis_id', $pokdarwis->id)
-            ->inRandomOrder()->limit(6)->get();
+            ->inRandomOrder()
+            ->limit(6)
+            ->get();
 
         $items = $products->map(function ($p) {
-            $img = $p->img
-                ? (str_starts_with($p->img, 'http') ? $p->img : asset('storage/'.$p->img))
-                : asset('assets/images/noimage.jpg');
+            $path = $p->img;
+
+            if ($path) {
+                // jika sudah absolute URL biarkan; jika relatif,
+                // tentukan apakah dari /public/assets atau dari storage
+                $img = Str::startsWith($path, ['http://','https://','//'])
+                    ? $path
+                    : (Str::startsWith($path, 'assets/')
+                        ? asset($path)                 // file di public/assets/...
+                        : asset('storage/'.$path));    // file di storage/app/public/...
+            } else {
+                $img = asset('assets/images/noimage.jpg');
+            }
 
             return [
                 'image'    => $img,
@@ -69,60 +71,30 @@ class PokdarwisController extends Controller
             ];
         });
 
-        return view('pokdarwis', compact('pokdarwis','pakets','items'));
-    }
+        // menu pokdarwis untuk navbar TOUR
+        $pokdarwisMenu = Pokdarwis::orderBy('name_pokdarwis')
+            ->get(['id','name_pokdarwis','slug']);
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show($id)
-    // {
-    //     $pokdarwis = Pokdarwis::findOrFail($id);
+            $galleryItems = $pokdarwis->mediaKonten->map(function ($m) {
+        $src = Str::startsWith($m->file_path, ['http://','https://','//'])
+            ? $m->file_path
+            : (Str::startsWith($m->file_path, 'assets/')
+                ? asset($m->file_path)
+                : asset('storage/'.$m->file_path));
 
-    //     // ambil produk milik pokdarwis ini
-    //     $products = Product::where('pokdarwis_id', $pokdarwis->id)
-    //         ->inRandomOrder()
-    //         ->limit(6)
-    //         ->get();
+        return [
+            'src' => $src,
+            'alt' => $m->judul_konten ?? 'Media',
+        ];
+    });
 
-    //     // mapping ke format untuk <x-produkcard>
-    //     $items = $products->map(function ($p) {
-    //         return [
-    //             'image'    => $p->img ? asset('storage/'.$p->img) : asset('assets/images/noimage.jpg'),
-    //             'cat'      => 'Produk',
-    //             'catUrl'   => '#',
-    //             'title'    => $p->name_product,
-    //             'titleUrl' => '#', // nanti bisa arahkan ke detail produk
-    //             'desc'     => $p->deskripsi,
-    //             'rating'   => 5,
-    //         ];
-    //     });
-
-    //     return view('pokdarwis', compact('pokdarwis','items'));
+        return view('pokdarwis', compact('pokdarwis','pakets','items','pokdarwisMenu','galleryItems'));
         
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pokdarwis $pokdarwis)
-    {
-        //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pokdarwis $pokdarwis)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pokdarwis $pokdarwis)
-    {
-        //
-    }
+    public function create() {}
+    public function store(Request $request) {}
+    public function edit(Pokdarwis $pokdarwis) {}
+    public function update(Request $request, Pokdarwis $pokdarwis) {}
+    public function destroy(Pokdarwis $pokdarwis) {}
 }
