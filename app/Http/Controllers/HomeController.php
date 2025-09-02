@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Support\Str;
-
+use App\Models\MediaKonten;
+use App\Models\PaketWisata;
+use App\Models\Pokdarwis;
 class HomeController extends Controller
 {
 
@@ -28,7 +30,12 @@ class HomeController extends Controller
             ];
         });
 
-        return view('home', compact('items'));
+        $featured = PaketWisata::with('pokdarwis:id,name_pokdarwis,slug')
+            ->latest('id')
+            ->take(6)
+            ->get(['id','pokdarwis_id','nama_paket','slug','lokasi','waktu_penginapan','pax','img','harga']);
+
+        return view('home', compact('items', 'featured'));
     }
     // public function index()
     // {

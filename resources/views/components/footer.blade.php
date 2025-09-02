@@ -77,16 +77,7 @@
 
       <div class="lower-footer">
         <div class="row align-items-center">
-          <div class="col-lg-6">
-            <div class="footer-newsletter">
-              <p>Subscribe our newsletter for more update & news !!</p>
-              <form class="newsletter">
-                <input type="email" name="email" placeholder="Enter Your Email">
-                <button type="submit" class="outline-btn outline-btn-white">Subscribe</button>
-              </form>
-            </div>
-          </div>
-          <div class="col-lg-6 text-right">
+          
             <div class="social-icon">
               <ul>
                 <li><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
@@ -103,7 +94,6 @@
                 <li><a href="#">FAQ</a></li>
               </ul>
             </div>
-          </div>
         </div>
       </div>
 

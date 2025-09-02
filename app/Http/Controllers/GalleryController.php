@@ -4,38 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Models\MediaKonten;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Models\Pokdarwis;
 
 class GalleryController extends Controller
 {
-    public function create()
+    public function index(Request $request)
     {
-        // $product = Product::where('pokdarwis_id', Auth::id())->get();
-        $gallery = MediaKonten::whereHas('product', function ($q) {
-            $q->where('pokdarwis_id', Auth::id());
-        })->get();
-        return view('pokdarwis', compact('gallery'));
+        $q = MediaKonten::query();
+
+        // ---- FILTERS (ambil dari query string) ----
+        if ($request->filled('pokdarwis_id')) {
+            $q->where('pokdarwis_id', $request->integer('pokdarwis_id'));
+        }
+        if ($request->filled('tipe')) {            // 'foto' | 'video'
+            $q->where('tipe_konten', $request->get('tipe'));
+        }
+        if ($request->filled('s')) {               // search judul
+            $q->where('judul_konten', 'like', '%'.$request->get('s').'%');
+        }
+
+        // pagination
+        $perPage = min(60, max(12, (int)$request->get('per_page', 24)));
+        $page = $q->latest('id')->paginate($perPage)->withQueryString();
+
+        // mapping ke format <x-gallery-card>
+        $items = $page->map(function ($m) {
+            return [
+                'src'   => $this->fileUrl($m->file_path),
+                'alt'   => $m->judul_konten ?? 'Media',
+                'title' => $m->judul_konten,
+            ];
+        });
+
+        // dropdown pokdarwis
+        $pokdarwisMenu = Pokdarwis::orderBy('name_pokdarwis')
+            ->get(['id','name_pokdarwis']);
+
+        // kirim juga nilai filter agar sticky di form
+        $filters = [
+            'pokdarwis_id' => $request->get('pokdarwis_id'),
+            'tipe'         => $request->get('tipe'),
+            's'            => $request->get('s'),
+            'per_page'     => $perPage,
+        ];
+
+        return view('gallery', compact('items','page','pokdarwisMenu','filters'));
     }
 
-    public function store(Request $request)
+    private function fileUrl(?string $path): string
     {
-        $request->validate([
-            'judul_konten' => 'required|string|max:255',
-            'tipe_konten' => 'required|in:foto,video',
-            'file' => 'required|file|mimes:jpg,jpeg,png,mp4|max:5120',
-        ]);
-
-        $path = $request->file('file')->store('gallery', 'public');
-
-        MediaKonten::create([
-            'judul_konten' => $request->judul_konten,
-            'tipe_konten' => $request->tipe_konten,
-            'konten' => 'gallery',
-            'file_path' => $path,
-            'pokdarwis_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('pokdarwis.gallery.create')
-            ->with('success', 'Konten gallery berhasil diupload.');
+        if (!$path) return asset('assets/images/noimage.jpg');
+        if (Str::startsWith($path, ['http://','https://','//'])) return $path;
+        if (Str::startsWith($path, 'assets/'))               return asset($path);
+        return asset('storage/'.$path);
     }
 }

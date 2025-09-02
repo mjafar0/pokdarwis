@@ -44,7 +44,7 @@
 
   <div id="page" class="page">
     {{-- Header (set menu aktif & tombol booking opsional) --}}
-    <x-site-header active="Tour" bookHref="#" bookText="Book Now" 
+    <x-site-header active="Tour" :pokdarwis="$pokdarwis ?? null" bookHref="#" bookText="Book Now" 
       
     />
 

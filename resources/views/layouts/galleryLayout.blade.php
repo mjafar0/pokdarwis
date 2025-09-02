@@ -43,12 +43,18 @@
 
   <div id="page" class="page">
     {{-- Header (set menu aktif & tombol booking opsional) --}}
-    <x-site-header active="about" bookHref="#" bookText="Book Now" />
+    <x-site-header active="gallery" bookHref="#" bookText="Book Now" />
 
 
     <main id="content" class="site-main">
       @yield('banner')   {{-- opsional --}}
       @yield('main')     {{-- konten halaman --}}
+      @if(isset($page))
+  <div class="container mb-5">
+    {{ $page->links() }}
+  </div>
+@endif
+
     </main>
 
     {{-- Footer --}}

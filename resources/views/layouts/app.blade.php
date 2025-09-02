@@ -4,7 +4,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="stylesheet" href="{{ asset('assets/vendors/slick/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/slick/slick-theme.css') }}">
     <!-- favicon -->
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
 
@@ -320,18 +321,19 @@
         <div class="overlay"></div>
     </div>
 
-    {{-- JS Scripts --}}
-    <script src="{{ asset('assets/vendors/jquery/jquery.js') }}" defer></script>
+        {{-- ... di paling bawah sebelum @stack --}}
+    <script src="{{ asset('assets/vendors/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('assets/vendors/slick/slick.min.js') }}"></script>
+
+    {{-- plugin lain boleh setelah ini (boleh pakai defer) --}}
+    <script src="{{ asset('assets/vendors/slick-nav/jquery.slicknav.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/waypoint/waypoints.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/jquery-ui/jquery-ui.min.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/countdown-date-loop-counter/loopcounter.js') }}" defer></script>
-    <script src="{{ asset('assets/vendors/counterup/jquery.counterup.min.js') }}" defer></script>
     <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js" defer></script>
     <script src="{{ asset('assets/vendors/masonry/masonry.pkgd.min.js') }}" defer></script>
-    <script src="{{ asset('assets/vendors/slick/slick.min.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/fancybox/dist/jquery.fancybox.min.js') }}" defer></script>
-    <script src="{{ asset('assets/vendors/slick-nav/jquery.slicknav.js') }}" defer></script>
     <script src="{{ asset('assets/js/custom.min.js') }}" defer></script>
     @stack('scripts')
 </body>

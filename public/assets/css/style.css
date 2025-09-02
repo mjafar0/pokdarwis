@@ -2727,6 +2727,7 @@ input[type=submit]:focus {
 }
 .home-banner .overlay {
   background-color: rgba(0, 0, 0, 0.544);
+  pointer-events: none;
 }
 @media screen and (max-width: 575px) {
   .home-banner {
