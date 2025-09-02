@@ -74,11 +74,9 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
           <li class="menu-item-has-children">
             <a href="#">Users</a>
             <ul>
-              <li><a href="#">Roles</a></li>
-              <li><a href="#">Permissions</a></li>
-              <li><a href="#">Superadmin</a></li>
-              <li><a href="#">Pokdarwis</a></li>
-              <li><a href="#">Wisatawan</a></li>
+              <li><a href="{!! route('settings-users-superadmin.index') !!}">Superadmin</a></li>
+              <li><a href="{!! route('settings-users-pokdarwis.index') !!}">Pokdarwis</a></li>
+              <li><a href="{!! route('settings-users-wisatawan.index') !!}">Wisatawan</a></li>
             </ul>
           </li>                    
         </ul>

@@ -32,6 +32,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    
+    @yield('page-styles')
 
     <title>@yield('title','Traveler – Travel & Trip Business')</title>
     @stack('styles')
@@ -98,15 +100,23 @@
 
     {{-- MAIN (isi dari child) --}}
     <main id="content" class="site-main">
-
         {{-- Banner --}}
         @hasSection('banner')
             @yield('banner')
         @endif
+        <div class="page-header">
+            @yield("page-header")
+        </div>
+        <div class="page-description">
+            @yield("page-description")
+        </div>
 
-
-        @yield('main')
-
+        <div class="page-breadcrumb">
+            @yield("page-breadcrumb")
+        </div>
+        <div class="container">
+            @yield('main')
+        </div>
     </main>
     
 
@@ -303,5 +313,7 @@
     <script src="{{ asset('assets/vendors/slick-nav/jquery.slicknav.js') }}" defer></script>
     <script src="{{ asset('assets/js/custom.min.js') }}" defer></script>
     @stack('scripts')
+
+    @yield('page-scripts')
 </body>
 </html>
