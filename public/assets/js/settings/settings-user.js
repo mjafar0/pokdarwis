@@ -21,7 +21,7 @@
 	};
 
 	var url_current_page = $('body').attr('url-current-page');
-	var datatable = $('#daftar-user-superadmin');
+	var datatable = $('#daftar-user-admin');
 
 	if (datatable.length) {
 		datatable.DataTable({			
