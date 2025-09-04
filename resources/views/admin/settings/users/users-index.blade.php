@@ -6,7 +6,7 @@
     <div class="admin-page-header d-flex align-items-center justify-content-between">
         <div>
             <h1>Users</h1>
-            <small class="text-muted">Mengelola user superadmin</small>
+            <small class="text-muted">Mengelola user admin</small>
         </div>
         <div class="admin-page-actions">
             <a href="" class="btn btn-primary px-4">+ Add User</a>
@@ -23,10 +23,10 @@
 <div class="card shadow-sm border-0">
     <div class="card-body">
         <div class="alert alert-light border d-flex align-items-center">
-            <strong class="me-2">User Superadmin</strong>
+            <strong class="me-2">User admin</strong>
         </div>
         <div class="card-body">
-        <table class="table table-sm" id="daftar-user-superadmin">
+        <table class="table table-sm" id="daftar-user-admin">
             <thead>
                 <tr>
                     <th>No</th>

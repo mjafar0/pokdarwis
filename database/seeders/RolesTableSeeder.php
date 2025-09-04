@@ -23,13 +23,13 @@ class RolesTableSeeder extends Seeder
     DB::statement("ALTER TABLE {$tableNames['roles']} AUTO_INCREMENT = 1;");
     DB::table($tableNames['roles'])->insert([
       [
-        'name' => 'superadmin',
+        'name' => 'admin',
         'guard_name' => 'web',
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now()
       ],
       [
-        'name' => 'superadmin',
+        'name' => 'admin',
         'guard_name' => 'api',
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now()
