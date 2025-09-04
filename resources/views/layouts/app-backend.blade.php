@@ -32,13 +32,14 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-backend.css') }}">
     
     @yield('page-styles')
 
-    <title>@yield('title','Traveler – Travel & Trip Business')</title>
+    <title>@yield('page-title')</title>
     @stack('styles')
 </head>
-<body>
+<body url-current-page="{!! Helper::getCurrentPageURL() !!}" base-url="{!! url('/') !!}">
 
     {{-- HEADER (tetap, reusable) --}}
     <div>
@@ -107,10 +108,6 @@
         
         <div class="page-header admin-header">
             @yield("page-header")
-        </div>
-
-        <div class="page-description">
-            @yield("page-description")
         </div>
 
         <div class="page-breadcrumb">

@@ -1,21 +1,17 @@
 @extends('layouts.app-backend')
-
+@section("page-title")
+    Users
+@endsection
 @section('page-header')
-        <div class="admin-page-header d-flex align-items-center justify-content-between">
-            <div>
+    <div class="admin-page-header d-flex align-items-center justify-content-between">
+        <div>
             <h1>Users</h1>
             <small class="text-muted">Mengelola user superadmin</small>
-            </div>
-            <div class="admin-page-actions">
+        </div>
+        <div class="admin-page-actions">
             <a href="" class="btn btn-primary px-4">+ Add User</a>
-            </div>
         </div>
-@endsection
-
-@section('page-description')
-        <div class="admin-page-desc">
-            Page Description
-        </div>
+    </div>
 @endsection
 
 @section('page-styles')
@@ -26,28 +22,21 @@
 @section('main')
 <div class="card shadow-sm border-0">
     <div class="card-body">
-      <div class="alert alert-light border d-flex align-items-center">
-        <strong class="me-2">User Superadmin</strong>
-      </div>
+        <div class="alert alert-light border d-flex align-items-center">
+            <strong class="me-2">User Superadmin</strong>
+        </div>
         <div class="card-body">
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Rizky</td>
-                        <td>Email</td>
-                        <td>Rizky</td>
-                    </tr>
-                </tbody>
-            </table>
+        <table class="table table-sm" id="daftar-user-superadmin">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>            
+        </table>
         </div>
     </div>
   </div>

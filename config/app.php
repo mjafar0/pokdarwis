@@ -123,4 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'aliases' => [            
+        'Helper' => App\Helpers\Helpers::class,
+        'HelperPage' => App\Helpers\HelperPage::class,        
+    ],
+
 ];
