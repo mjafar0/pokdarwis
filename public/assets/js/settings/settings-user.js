@@ -30,14 +30,14 @@
 			serverSide: true,
 			searchDelay: 2700,
 			language: {
-				search: '<i class="ti ti-search ti-sm"></i>',
+				search: '<i class="fas fa-search fa-sm"></i>',
 				searchPlaceholder: 'Cari Data',
 				info: 'Menampilkan _START_ - _END_ dari _TOTAL_ data',
 				infoEmpty: 'Menampilkan 0 - 0 dari 0 data',
 				infoFiltered: '(filtered from _MAX_ total entries)',
 				paginate: {
-					next: '<i class="ti ti-chevron-right ti-sm"></i>',
-					previous: '<i class="ti ti-chevron-left ti-sm"></i>',
+					next: '<i class="fas fa-chevron-right fa-sm"></i>',
+					previous: '<i class="fas fa-chevron-left fa-sm"></i>',
 				},
 				emptyTable: 'Tidak ada data user superadmin yang tersedia'
 			},
@@ -56,9 +56,9 @@
 					sortable: false,
 					render: function (data, type, full, meta) {
 						return `
-							<a href="${url_current_page}/${full.id}" class="btn btn-sm btn-primary"><i class="ti ti-eye"></i></a>
-							<a href="${url_current_page}/${full.id}/edit" class="btn btn-sm btn-warning"><i class="ti ti-edit"></i></a>
-							<a href="${url_current_page}/${full.id}" class="btn btn-sm btn-danger"><i class="ti ti-trash"></i></a>
+							<a href="${url_current_page}/${full.id}" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+							<a href="${url_current_page}/${full.id}/edit" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+							<a href="${url_current_page}/${full.id}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
 						`;
 					}
 				}
