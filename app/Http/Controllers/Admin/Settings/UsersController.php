@@ -31,7 +31,7 @@ class UsersController extends Controller
         if ($request->wantsJson())
         {
             $data = User::select('*')
-            ->where('role', 'superadmin');
+            ->where('role', 'admin');
             
             return DataTables::of($data)
             ->addIndexColumn()      
