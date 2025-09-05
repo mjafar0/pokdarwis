@@ -15,7 +15,7 @@ class PaketWisataSeeder extends Seeder
     {
         $pakets = [
             [
-                'pokdarwis_id'    => 6,
+                'pokdarwis_id'    => 1,
                 'nama_paket'      => 'EXPERIENCE THE GREAT HOLIDAY ON BEACH',
                 'deskripsi'       => 'Jelajahi keindahan pantai dengan pasir putih dan laut biru yang mempesona.',
                 'waktu_penginapan'=> '7D/6N',
@@ -29,7 +29,7 @@ class PaketWisataSeeder extends Seeder
                 'updated_at'      => now(),
             ],
             [
-                'pokdarwis_id'    => 6,
+                'pokdarwis_id'    => 1,
                 'nama_paket'      => 'SUMMER HOLIDAY TO THE OXOLOTAN RIVER',
                 'deskripsi'       => 'Nikmati liburan musim panas di sungai eksotis dengan pemandangan hijau alami.',
                 'waktu_penginapan'=> '5D/4N',
@@ -43,7 +43,7 @@ class PaketWisataSeeder extends Seeder
                 'updated_at'      => now(),
             ],
             [
-                'pokdarwis_id'    => 6,
+                'pokdarwis_id'    => 1,
                 'nama_paket'      => 'ADVENTURE IN KYOTO TEMPLE',
                 'deskripsi'       => 'Wisata budaya dan sejarah ke kuil tua di Kyoto, Jepang.',
                 'waktu_penginapan'=> '3D/2N',

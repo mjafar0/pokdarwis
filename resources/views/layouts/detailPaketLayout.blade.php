@@ -46,7 +46,6 @@
     {{-- Header (set menu aktif & tombol booking opsional) --}}
     <x-site-header active="about" bookHref="#" bookText="Book Now" />
 
-
     <main id="content" class="site-main">
       @yield('banner')   {{-- opsional --}}
       <X-banner>

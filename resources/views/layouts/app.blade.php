@@ -92,12 +92,11 @@
 
                     <div class="bottom-header-inner d-flex justify-content-between align-items-center">
                         <div class="header-btn">
-                            <a href="{{ url('/login') }}" class="round-btn">LOGIN</a>
+                            <a href="{{ url('/login') }}"class="round-btn" style="all:unset; color:white; cursor:pointer; display:inline-block;">LOG IN</a>
                         </div>
-                        
-                        <div class="header-btn">
-                            <a href="{{ url('/register') }}" class="round-btn">REGISTER</a>
-                        </div>
+                        {{-- <div class="header-btn" >
+                            <a href="{{ url('/register') }}" class="round-btn" style="all:unset; color:white; cursor:pointer; display:inline-block;">REGISTER</a>
+                        </div> --}}
                     </div>
 
                 </div>

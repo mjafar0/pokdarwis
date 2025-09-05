@@ -17,7 +17,7 @@
         />
       </div>
     @empty
-      <p class="text-muted">Belum ada postingan.</p>
+      <p class="text-muted">No Posts Yet.</p>
     @endforelse
 
     {{-- Pagination Article/Blog --}}

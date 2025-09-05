@@ -13,13 +13,13 @@ class PokdarwisSeeder extends Seeder
      */
     public function run(): void
     {
-        // Pokdarwis::create([
-        //     'user_id' => 1,
-        //     'name_pokdarwis' => 'Pokdarwis Satu',
-        //     'lokasi' => 'Alamat Pokdarwis',
-        //     'deskripsi' => 'Gudem Bee Farm adalah...',
-        //     'kontak' => '083802020',
-        // ]);
+        Pokdarwis::create([
+            'user_id' => 3,
+            'name_pokdarwis' => 'Gurun Telaga Biru',
+            'lokasi' => 'Bintan',
+            'deskripsi' => 'Gurun Telaga Biru is ...',
+            'kontak' => '083802020',
+        ]);
 
         // Pokdarwis::create([
         //     'user_id' => 2,
