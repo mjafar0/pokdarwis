@@ -47,12 +47,12 @@
             <div class="top-header">
                 <div class="container">
                     <div class="top-header-inner">
-                        <div class="header-contact text-left">
+                        <div class="header-contact-admin text-left">
                             <a href="tel:01977259912">
                                 <i aria-hidden="true" class="icon icon-phone-call2"></i>
-                                <div class="header-contact-details">
+                                <div class="header-contact-admin-details">
                                     <span class="contact-label">For Further Inquires :</span>
-                                    <h5 class="header-contact-no">+01 (977) 2599 12</h5>
+                                    <h5 class="header-contact-admin-no">+01 (977) 2599 12</h5>
                                 </div>
                             </a>
                         </div>
@@ -79,6 +79,7 @@
     
                 <div class="container">
                     <div class="bottom-header-inner d-flex justify-content-between align-items-center">
+                        <div></div>
                         
     
                         {{-- Navigation Bar --}}
@@ -89,7 +90,9 @@
                         <div class="header-btn">
                             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                                 @csrf
-                                <button type="submit" class="round-btn">LOGOUT</button>
+                                <div class="header-btn">
+                                    <a href="" class="round-btn">LOGOUT</a>
+                                </div>
                             </form>
                         </div>
                     </div>

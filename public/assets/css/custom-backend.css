@@ -5,3 +5,224 @@
     background-color: white !important;
     color: #333 !important;
 }
+
+.navigation-container-admin {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.navigation-container-admin .navigation > ul > li {
+  display: inline-block;
+  
+  padding: 0 16px;
+}
+.navigation-container-admin ul {
+  
+  font-size: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navigation-container-admin ul > li.menu-item-has-children > a:after {
+  content: "\f0d7";
+}
+.navigation-container-admin ul > li:last-child {
+  border-bottom: none;
+}
+.navigation-container-admin ul > li:last-child:before {
+  display: none;
+}
+.navigation-container-admin ul > li > a {
+  color: #f01212;
+  display: inline-block;
+  font-size: 16px;
+  padding: 20px 0;
+  font-weight: 400;
+  line-height: 1.3;
+  position: relative;
+  text-transform: uppercase;
+}
+.navigation-container-admin ul > li:hover > ul, .navigation-container-admin ul > li:focus > ul, .navigation-container-admin ul > li:active > ul {
+  display: block;
+}
+.navigation-container-admin ul > li:hover > a, .navigation-container-admin ul > li:focus > a, .navigation-container-admin ul > li:active > a {
+  color: #3A78C9;
+}
+.navigation-container-admin ul > li:hover > a:after, .navigation-container-admin ul > li:focus > a:after, .navigation-container-admin ul > li:active > a:after {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.navigation-container-admin ul ul {
+  background: #ffffff;
+  border-top: 4px solid #3A78C9;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  width: 250px;
+  z-index: 99;
+  display: none;
+  text-align: left;
+  -webkit-animation: slide-up 0.3s ease-out;
+  -moz-animation: slide-up 0.3s ease-out;
+  -ms-animation: slide-up 0.3s ease-out;
+  -o-animation: slide-up 0.3s ease-out;
+  animation: slide-up 0.3s ease-out;
+}
+.navigation-container-admin ul ul li {
+  border-bottom: 1px solid #DDD;
+  position: relative;
+  display: block;
+}
+.navigation-container-admin ul ul li a {
+  color: #333;
+  display: block;
+  padding: 13px 20px;
+  text-transform: capitalize;
+  font-weight: 600;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -ms-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.navigation-container-admin ul ul li a:hover, .navigation-container-admin ul ul li a:focus, .navigation-container-admin ul ul li a:active {
+  padding-left: 30px;
+  color: #3A78C9;
+}
+.navigation-container-admin ul ul li > ul {
+  left: 100%;
+  top: 0;
+}
+.navigation-container-admin ul ul li.menu-item-has-children > a:after {
+  content: "\f0da";
+}
+.navigation-container-admin ul ul li:hover > ul, .navigation-container-admin ul ul li:focus > ul, .navigation-container-admin ul ul li:active > ul {
+  display: block;
+  top: -3px;
+}
+.navigation-container-admin ul ul li:hover a:after, .navigation-container-admin ul ul li:focus a:after, .navigation-container-admin ul ul li:active a:after {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.navigation-container-admin ul li {
+  position: relative;
+}
+.navigation-container-admin ul li:last-child ul, .navigation-container-admin ul li:nth-last-child(2) ul {
+  left: auto;
+  right: 0;
+}
+.navigation-container-admin ul li:last-child ul ul, .navigation-container-admin ul li:nth-last-child(2) ul ul {
+  right: 100%;
+}
+.navigation-container-admin ul li.menu-item-has-children > a {
+  position: relative;
+}
+.navigation-container-admin ul li.menu-item-has-children > a:after {
+  display: inline-block;
+  float: right;
+  font-size: 14px;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-weight: 900;
+  margin-left: 8PX;
+  -webkit-transition: transform 0.4s;
+  -moz-transition: transform 0.4s;
+  -ms-transition: transform 0.4s;
+  -o-transition: transform 0.4s;
+  transition: transform 0.4s;
+}
+.navigation-container-admin ul li.menu-item-has-children li:hover > a, .navigation-container-admin ul li.menu-item-has-children li:focus > a {
+  background-color: #174B90;
+  color: #ffffff;
+}
+.navigation-container-admin ul li.current-menu-item > a, .navigation-container-admin ul li.current-menu-parent > a, .navigation-container-admin ul li.menu-active > a {
+  color: #3A78C9;
+}
+
+.navigation-container-admin-admin ul > li > a {
+  color: #f01212;
+  display: inline-block;
+  font-size: 16px;
+  padding: 20px 0;
+  font-weight: 400;
+  line-height: 1.3;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.header-contact-admin-admin * {
+  color: #f01212;
+}
+
+.header-contact-admin a {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.header-contact-admin i {
+  background-color: #3A78C9;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  border-radius: 100%;
+  color: #ffffff;
+  display: block;
+  font-size: 17px;
+  line-height: 45px;
+  height: 45px;
+  text-align: center;
+  width: 45px;
+}
+.header-contact-admin .header-contact-admin-details {
+  width: -moz-calc(100% - 55px);
+  width: -webkit-calc(100% - 55px);
+  width: calc(100% - 55px);
+  padding-left: 10px;
+}
+.header-contact-admin .header-contact-admin-details .contact-label {
+  display: block;
+  font-size: 13px;
+}
+.header-contact-admin .header-contact-admin-details h5 {
+  margin-bottom: 0;
+}
+@media screen and (max-width: 767px) {
+  .header-contact-admin .header-contact-admin-details {
+    display: none;
+  }
+}
+@media screen and (max-width: 575px) {
+  .header-contact-admin i {
+    font-size: 14px;
+    line-height: 30px;
+    height: 30px;
+    width: 30px;
+  }
+}

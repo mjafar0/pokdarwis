@@ -47,7 +47,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
 };
 @endphp
 
-<div class="navigation-container d-none d-lg-block">
+<div class="navigation-container-admin d-none d-lg-block">
   <nav id="navigation" class="navigation" aria-label="Main">
     <ul>
       <li class="{{ $isActive('home') }}"><a href="{{ $hrefHome }}">Home</a></li>

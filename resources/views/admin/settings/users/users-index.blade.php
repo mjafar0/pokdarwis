@@ -8,8 +8,8 @@
             <h1>Users</h1>
             <small class="text-muted">Mengelola user admin</small>
         </div>
-        <div class="admin-page-actions">
-            <a href="" class="btn btn-primary px-4">+ Add User</a>
+        <div class="header-btn">
+            <a href="" class="round-btn">+ Add User</a>
         </div>
     </div>
 @endsection
