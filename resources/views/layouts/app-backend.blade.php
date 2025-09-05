@@ -88,14 +88,14 @@
                         </x-navbar-admin>
     
                         <div class="header-btn">
-                            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                            <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                                 @csrf
-                                <div class="header-btn">
-                                    <a href="" class="round-btn">LOGOUT</a>
-                                </div>
+                                <button type="submit" class="round-btn" style="all:unset; cursor:pointer; display:inline-block; font-weight: bold;">
+                                    LOGOUT
+                                </button>
                             </form>
                         </div>
-                    </div>
+
                 </div>
     
             <div class="mobile-menu-container"></div>
