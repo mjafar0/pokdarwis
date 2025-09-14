@@ -43,7 +43,68 @@
   <div id="page" class="page">
 
     {{-- Header global (navbar situs) --}}
-    <x-site-header active="pages" />
+    <header id="masthead" class="site-header">
+        <div class="top-header">
+            <div class="container">
+                <div class="top-header-inner">
+                    <div class="header-contact text-left">
+                        <a href="tel:01977259912">
+                            <i aria-hidden="true" class="icon icon-phone-call2"></i>
+                            <div class="header-contact-details">
+                                <span class="contact-label">For Further Inquires :</span>
+                                <h5 class="header-contact-no">+01 (977) 2599 12</h5>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="site-logo text-center">
+                        <h1 class="site-title">
+                            <a href="{{ url('/') }}">
+                                <img src="{{ asset('assets/images/site-logo.png') }}" alt="Logo">
+                            </a>
+                        </h1>
+                    </div>
+
+                    <div class="header-icon text-right">
+                        <div class="header-search-icon d-inline-block">
+                            <a href="#"><i aria-hidden="true" class="fas fa-search"></i></a>
+                        </div>
+                        <div class="offcanvas-menu d-inline-block">
+                            <a href="#"><i aria-hidden="true" class="icon icon-burger-menu"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-header">
+            <div class="container">
+                <div class="bottom-header-inner d-flex justify-content-between align-items-center">
+                    <div class="header-social social-icon">
+                        <ul>
+                            <li><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="https://www.twitter.com"  target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="https://www.youtube.com"  target="_blank"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+
+                    {{-- Navigation Bar --}}
+                    <x-navbar active="pages">
+
+                    </x-navbar>
+
+                    <div class="bottom-header-inner d-flex justify-content-between align-items-center">
+                        <div class="header-btn">
+                            <a href="{{ url('/login') }}"class="round-btn" style="all:unset; color:white; cursor:pointer; display:inline-block;">LOG IN</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-menu-container"></div>
+    </header>
 
     <main id="content" class="site-main">
 

@@ -43,29 +43,39 @@
   <x-preloader />
 
   <div id="page" class="page">
-    {{-- Header (set menu aktif & tombol booking opsional) --}}
-    <x-site-header active="about" bookHref="#" bookText="Book Now" />
+    {{-- Header , Tombol Booking --}}
+    @php
+         use Illuminate\Support\Facades\Route;
+         $ctxPokdarwis = $pokdarwis ?? ($paket->pokdarwis ?? null);
+
+         // default: booking umum
+         $bookHref = Route::has('booking') ? route('booking') : url('/booking');
+
+         // jika ada paket + pokdarwis → arahkan ke route paket
+         if (isset($paket, $ctxPokdarwis) && Route::has('booking.package')) {
+            $bookHref = route('booking.package', [$ctxPokdarwis, $paket]);
+         }
+         // kalau hanya ada pokdarwis → route pokdarwis
+         elseif ($ctxPokdarwis && Route::has('booking.pokdarwis')) {
+            $bookHref = route('booking.pokdarwis', $ctxPokdarwis);
+         }
+      @endphp
+   <x-site-header active="about" :bookHref="$bookHref" bookText="Book Now" />
+    
 
     <main id="content" class="site-main">
-      @yield('banner')   {{-- opsional --}}
-      <X-banner>
-
-      </X-banner>
-
-      {{-- konten halaman --}}
+      @yield('banner')
       @yield('main')
-      
-      
-    </main>
+      <aside class="col-lg-4 mb-5">  </aside>
+      @yield('footer')
+   </main>
+   
+   
+   <x-back-to-top />
+   
+</div>
 
-    {{-- Footer --}}
-    <x-footer />
-
-    {{-- Back to top --}}
-    <x-back-to-top />
-  </div>
-
-      <!-- JavaScript -->
+<!-- JavaScript -->
       <script src="{{ asset('assets/vendors/jquery/jquery.js') }}"></script>
       <script src="{{ asset('assets/vendors/waypoint/waypoints.js') }}"></script>
       {{-- <script src="{{ asset('assets/vendors/bootstrap/js/bootstrap.min.js') }}"></script> --}}

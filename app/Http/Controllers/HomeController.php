@@ -15,18 +15,28 @@ class HomeController extends Controller
         $products = Product::inRandomOrder()->limit(8)->get();
 
         $items = $products->map(function ($p) {
-            $img = $p->img
-                ? (str_starts_with($p->img, 'http') ? $p->img : asset('storage/'.$p->img))
-                : asset('assets/images/noimage.jpg');
+            $path = $p->img;
+
+            if ($path) {
+                // jika sudah absolute URL biarkan; jika relatif,
+                // tentukan apakah dari /public/assets atau dari storage
+                $img = Str::startsWith($path, ['http://','https://','//'])
+                    ? $path
+                    : (Str::startsWith($path, 'assets/')
+                        ? asset($path)                 // file di public/assets/...
+                        : asset('storage/'.$path));    // file di storage/app/public/...
+            } else {
+                $img = asset('assets/images/noimage.jpg');
+            }
 
             return [
-                'image'     => $p->image_url,
-                'cat'       => 'Produk',
-                'catUrl'    => '#',
-                'title'     => $p->name_product,
-                'titleUrl'  => '#',   // ganti ke route detail produk jika ada
-                'desc'      => $p->deskripsi,
-                'rating'    => 5,
+                'image'    => $img,
+                'cat'      => 'Produk',
+                'catUrl'   => '#',
+                'title'    => $p->name_product,
+                'titleUrl' => '#',
+                'desc'     => $p->deskripsi,
+                'rating'   => 5,
             ];
         });
 

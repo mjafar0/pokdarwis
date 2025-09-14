@@ -19,6 +19,14 @@ class Pokdarwis extends Model
         'deskripsi',
         'kontak',
         'deskripsi',
+        'img',
+        'deskrips2',
+        'phone',
+        'email;',
+        'facebook',
+        'twitter',
+        'instagram',
+        'website',
     ];
 
     /**
@@ -42,5 +50,9 @@ class Pokdarwis extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+    public function pakets()
+    {
+        return $this->hasMany(\App\Models\PaketWisata::class, 'pokdarwis_id');
     }
 }

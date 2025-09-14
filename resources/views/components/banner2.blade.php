@@ -1,4 +1,7 @@
-@props(['pokdarwis' => null])
+@props([
+  'pokdarwis' => null,
+  'paket' => null,
+])
 
 <div class="inner-banner-wrap">
   <div class="inner-baner-container" 

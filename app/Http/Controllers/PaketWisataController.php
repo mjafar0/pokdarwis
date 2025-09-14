@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PaketWisata;
 use App\Models\PaketFasilitas;
+use App\Models\Pokdarwis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -19,7 +20,7 @@ class PaketWisataController extends Controller
         {
         $pakets = PaketWisata::where('pokdarwis_id', 6)
             ->latest('id')
-            ->paginate(9);
+            ->paginate(3);
 
         // untuk <x-produkcard>, kita bisa mapping jadi array items:
         $items = $pakets->map(function ($p) {
@@ -47,69 +48,85 @@ class PaketWisataController extends Controller
     }
 
     public function store(Request $r)
-    {
-        $data = $r->validate([
-            'nama_paket'       => 'required|string|max:100',
-            'deskripsi'        => 'nullable|string',
-            'waktu_penginapan' => 'required|string|max:20',
-            'pax'              => 'required|integer|min:1',
-            'lokasi'           => 'required|string|max:100',
-            'harga'            => 'required|numeric|min:0',
-            'currency'         => 'nullable|string|max:10',
-            'img'              => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            // fasilitas (array string)
-            'include_items'    => 'array',
-            'include_items.*'  => 'nullable|string|max:255',
-            'exclude_items'    => 'array',
-            'exclude_items.*'  => 'nullable|string|max:255',
+{
+    dd($r->all());
+    $data = $r->validate([
+        'nama_paket'       => 'required|string|max:100',
+        'deskripsi'        => 'nullable|string',
+        'waktu_penginapan' => 'required|string|max:20',
+        'pax'              => 'required|integer|min:1',
+        'lokasi'           => 'required|string|max:100',
+        'harga'            => 'required|numeric|min:0',
+        'currency'         => 'nullable|string|max:10',
+        'img'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+        // fasilitas (ARRAY) sesuai form
+        'include_items'    => 'nullable|array',
+        'include_items.*'  => 'nullable|string|max:255',
+        'exclude_items'    => 'nullable|array',
+        'exclude_items.*'  => 'nullable|string|max:255',
+    ]);
+
+    // 2) Ambil Pokdarwis milik user login (tabel pokdarwis punya user_id)
+    $pokdarwis = Pokdarwis::where('user_id', Auth::id())->first();
+    abort_unless($pokdarwis, 403, 'Profil Pokdarwis belum terdaftar.');
+
+    // 3) Rapikan nilai fasilitas (trim + buang kosong)
+    $includes = array_values(array_filter(array_map('trim', (array) $r->input('include_items', [])), fn($v)=>$v!==''));
+    $excludes = array_values(array_filter(array_map('trim', (array) $r->input('exclude_items', [])), fn($v)=>$v!==''));
+
+    // (opsional) debug bila perlu:
+    // dd($r->all(), $includes, $excludes);
+
+    // 4) Simpan paket + fasilitas dalam transaction
+    DB::transaction(function () use ($r, $data, $pokdarwis, $includes, $excludes) {
+
+        $path = $r->hasFile('img') ? $r->file('img')->store('paket', 'public') : null;
+
+        $paket = PaketWisata::create([
+            'pokdarwis_id'     => $pokdarwis->id,
+            'nama_paket'       => $data['nama_paket'],
+            'deskripsi'        => $data['deskripsi'] ?? null,
+            'waktu_penginapan' => $data['waktu_penginapan'],
+            'pax'              => $data['pax'],
+            'lokasi'           => $data['lokasi'],
+            'img'              => $path,
+            'slug'             => Str::slug($data['nama_paket']).'-'.Str::random(5),
+            'harga'            => $data['harga'],
+            'currency'         => $data['currency'] ?? 'IDR',
         ]);
 
-        DB::transaction(function () use ($r, $data) {
-            $path = null;
-            if ($r->hasFile('img')) {
-                $path = $r->file('img')->store('paket', 'public');
-            }
+        // siapkan rows fasilitas untuk insert batch
+        $rows = [];
 
-            $paket = PaketWisata::create([
-                'pokdarwis_id'    => Auth::id(), // asumsi user = pokdarwis
-                'nama_paket'      => $data['nama_paket'],
-                'deskripsi'       => $data['deskripsi'] ?? null,
-                'waktu_penginapan'=> $data['waktu_penginapan'],
-                'pax'             => $data['pax'],
-                'lokasi'          => $data['lokasi'],
-                'img'             => $path,
-                'slug'            => Str::slug($data['nama_paket']).'-'.Str::random(5),
-                'harga'           => $data['harga'],
-                'currency'        => $data['currency'] ?? 'USD',
-            ]);
+        foreach ($includes as $i => $val) {
+            $rows[] = [
+                'paket_wisata_id' => $paket->id,
+                'nama_item'       => $val,
+                'tipe'            => 'include',    // sesuai ENUM di DB
+                'sort_order'      => (int) $i,
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ];
+        }
+        foreach ($excludes as $i => $val) {
+            $rows[] = [
+                'paket_wisata_id' => $paket->id,
+                'nama_item'       => $val,
+                'tipe'            => 'exclude',    // sesuai ENUM di DB
+                'sort_order'      => (int) $i,
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ];
+        }
 
-            // simpan fasilitas include
-            foreach (($r->include_items ?? []) as $i => $val) {
-                $val = trim((string)$val);
-                if ($val === '') continue;
-                PaketFasilitas::create([
-                    'paket_wisata_id' => $paket->id,
-                    'nama_item'       => $val,
-                    'tipe'            => 'include',
-                    'sort_order'      => $i,
-                ]);
-            }
+        if ($rows) {
+            PaketFasilitas::insert($rows);
+        }
+    });
 
-            // simpan fasilitas exclude
-            foreach (($r->exclude_items ?? []) as $i => $val) {
-                $val = trim((string)$val);
-                if ($val === '') continue;
-                PaketFasilitas::create([
-                    'paket_wisata_id' => $paket->id,
-                    'nama_item'       => $val,
-                    'tipe'            => 'exclude',
-                    'sort_order'      => $i,
-                ]);
-            }
-        });
-
-        return redirect()->route('paket.index')->with('success','Paket berhasil dibuat.');
-    }
+    return back()->with('success','Paket berhasil dibuat.');
+}
 
     public function show($slug)
     {

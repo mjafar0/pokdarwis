@@ -13,4 +13,7 @@ class PaketFasilitas extends Model
     {
         return $this->belongsTo(PaketWisata::class, 'paket_wisata_id');
     }
+    protected $casts = [
+        'sort_order' => 'integer',
+    ];
 }

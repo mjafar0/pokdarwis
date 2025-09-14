@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;   
 use App\Http\Controllers\HomeController;
@@ -15,6 +16,15 @@ Route::get('/home', [HomeController::class, 'index']);
 // Index
 Route::get('/pokdarwis', [PokdarwisController::class, 'index'])->name('pokdarwis');
 
+// Booking per pokdarwis
+Route::get('/tour/{pokdarwis:slug}/booking', [BookingController::class, 'forPokdarwis'])
+     ->name('booking.pokdarwis');
+
+// Booking per paket di pokdarwis
+Route::get('/tour/{pokdarwis:slug}/paket/{paket:slug}/booking', [BookingController::class, 'forPackage'])
+     ->name('booking.package');
+
+     
 // Detail pakai slug
 Route::get('/tour/{pokdarwis:slug}', [PokdarwisController::class, 'show'])
     ->name('pokdarwis.show');

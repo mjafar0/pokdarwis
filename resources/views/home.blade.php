@@ -10,7 +10,8 @@
       'title'=>'JOURNEY TO EXPLORE WORLD',
       'text'=>'WELCOME',
       'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
+    //   'primaryText'=>'EXPLORE'
+    ],
       
       ['image'=>'assets/images/guruntelagabiru.jpg',
       'title'=>'BEAUTIFUL PLACE TO VISIT',
@@ -58,21 +59,24 @@
 @endsection
 
 @section('main')
+                  <x-product-card2
+                    subtitle="UNCOVER PLACE"
+                    title="POPULAR PRODUCT"
+                    text="Produk-produk pilihan dari berbagai Pokdarwis."
+                    :items="$items"
+                    ctaHref="{{ url('/destination') }}"
+                    ctaText="More Destination"
+                />
 
-    {{-- Produk Card --}}
-        <x-product-card
-            subtitle="UNCOVER PLACE"
-            title="POPULAR PRODUCT"
-            text="Produk-produk pilihan dari berbagai Pokdarwis."
-            :items="$items"
-            ctaHref="{{ url('/destination') }}"
-            ctaText="More Destination"
-        />
+<section class="inner-about-wrap py-2">
+    <div class="container">
+            {{-- Produk Card --}}
+    </div>
+</section>
 
 @endsection
 
         <!-- ***home banner html end here*** -->
-    
         <!-- ***Home search field html start from here*** -->
         {{-- <div class="home-trip-search primary-bg">
             <div class="container">

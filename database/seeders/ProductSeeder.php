@@ -43,20 +43,20 @@ class ProductSeeder extends Seeder
                 'img'          => 'assets/images/img14.jpg',
                 'created_at'   => $now, 'updated_at' => $now,
             ],
-            [
-                'pokdarwis_id' => 3,
-                'name_product' => 'Kerajinan Tangan',
-                'deskripsi'    => 'Kerajinan Flora',
-                'img'          => 'assets/images/img13.jpg',
-                'created_at'   => $now, 'updated_at' => $now,
-            ],
-            [
-                'pokdarwis_id' => 3,
-                'name_product' => 'Kerajinan Tangan ',
-                'deskripsi'    => 'Kerajinan Tangan Fauna',
-                'img'          => 'assets/images/img14.jpg',
-                'created_at'   => $now, 'updated_at' => $now,
-            ],
+            // [
+            //     'pokdarwis_id' => 3,
+            //     'name_product' => 'Kerajinan Tangan',
+            //     'deskripsi'    => 'Kerajinan Flora',
+            //     'img'          => 'assets/images/img13.jpg',
+            //     'created_at'   => $now, 'updated_at' => $now,
+            // ],
+            // [
+            //     'pokdarwis_id' => 3,
+            //     'name_product' => 'Kerajinan Tangan ',
+            //     'deskripsi'    => 'Kerajinan Tangan Fauna',
+            //     'img'          => 'assets/images/img14.jpg',
+            //     'created_at'   => $now, 'updated_at' => $now,
+            // ],
         ];
 
         DB::table('products')->insert($rows);

@@ -49,7 +49,6 @@
       </div>
     </div> --}}
 
-    <div class="destination-section">
       <div class="row">
         @foreach($items as $it)
           @php
@@ -91,6 +90,5 @@
       <div class="section-btn-wrap text-center">
         {{-- <a href="{{ $ctaHref }}" class="round-btn">{{ $ctaText }}</a> --}}
       </div>
-    </div>
   </div>
 </section>

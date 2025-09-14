@@ -25,6 +25,15 @@ class PaketWisata extends Model
     {
         return 'slug';
     }
+    protected static function booted()
+    {
+        static::creating(function ($m) {
+            if (empty($m->slug)) {
+                $base = Str::slug(Str::limit($m->nama_paket, 60, ''));
+                $m->slug = $base.'-'.Str::random(6);
+            }
+        });
+    }
 
     // Relasi (opsional kalau ada model Pokdarwis)
     public function pokdarwis()
@@ -36,9 +45,22 @@ class PaketWisata extends Model
     public function getCoverUrlAttribute()
     {
         $img = $this->img ?: 'assets/images/img1.jpg';
-        return Str::startsWith($img, ['http://','https://','//'])
-            ? $img
-            : asset($img);
+
+        if (Str::startsWith($img, ['http://','https://','//'])) {
+            return $img;
+        }
+        if (Str::startsWith($img, ['paket/'])) { // hasil upload ke disk 'public'
+            return asset('storage/'.$img);
+        }
+        return asset($img); // asumsi path ke public/
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $img = $this->img ?: 'assets/images/img1.jpg';
+        if (Str::startsWith($img, ['http://','https://','//'])) return $img;
+        if (Str::startsWith($img, 'paket/')) return asset('storage/'.$img); // upload disk public
+        return asset($img);
     }
 
     // Accessor harga terformat
@@ -49,7 +71,7 @@ class PaketWisata extends Model
 
     public function fasilitas()
     {
-        return $this->hasMany(PaketFasilitas::class);
+        return $this->hasMany(PaketFasilitas::class, 'paket_wisata_id');
     }
 
     // helper

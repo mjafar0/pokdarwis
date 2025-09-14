@@ -30,12 +30,34 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole(['wisatawan']);
 
-        $user = User::create([
-            'name' => 'Pokdarwis Satu',
-            'email' => 'pokdarwis@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'pokdarwis'
-        ]);
-        $user->assignRole(['pokdarwis']);
+        // $user = User::create([
+        //     'name' => 'Pokdarwis Satu',
+        //     'email' => 'pokdarwis@example.com',
+        //     'password' => Hash::make('password123'),
+        //     'role' => 'pokdarwis'
+        // ]);
+        // $user->assignRole(['pokdarwis']);
+
+        $names = [
+            'Gurun Telaga Biru',
+            'Gudem Bee Farm',
+            'Sumat',
+            'Lesung Emas',
+            'Manggar Abadi',
+            'Bajakah',
+            'Pemancingan Wong Dheso',
+            'Tekad Tani',
+        ];
+
+        foreach ($names as $name) {
+            $user = User::create([
+                'name'            => $name,
+                'email'           => strtolower(str_replace(' ', '', $name)) . '@example.com',
+                'password'        => Hash::make('password123'),
+                'role'            => 'pokdarwis',  
+                'jenis_wisatawan' => 'WNI',
+            ]);
+            $user->assignRole('pokdarwis');
+        }
     }
 }

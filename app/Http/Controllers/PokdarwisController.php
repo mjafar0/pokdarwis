@@ -18,7 +18,7 @@ class PokdarwisController extends Controller
         // contoh: default ambil paket milik pokdarwis id=6
         $pakets = PaketWisata::where('pokdarwis_id', 6)
             ->latest('id')
-            ->paginate(6);
+            ->paginate(3);
 
         // menu pokdarwis untuk navbar TOUR
         $pokdarwisMenu = Pokdarwis::orderBy('name_pokdarwis')
@@ -37,7 +37,7 @@ class PokdarwisController extends Controller
         // Paket wisata milik pokdarwis ini
         $pakets = PaketWisata::where('pokdarwis_id', $pokdarwis->id)
             ->latest('id')
-            ->paginate(6);
+            ->paginate(3);
 
         // Produk milik pokdarwis ini untuk <x-product-card>
         $products = Product::where('pokdarwis_id', $pokdarwis->id)

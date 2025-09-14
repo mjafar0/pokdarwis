@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware(['web', 'auth'])
             ->prefix('admin')
             ->group(base_path('routes/r_admin.php'));
+            
+            //routing pokdarwis
+            Route::middleware(['web', 'auth'])
+            ->prefix('pokdarwis')
+            ->group(base_path('routes/r_pokdarwis.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {

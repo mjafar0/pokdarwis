@@ -24,9 +24,6 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
     return ($pokdarwis && ($pokdarwis->id === $pd->id)) ? 'current-menu-item' : '';
 };
 
-
-
-
 $hrefDest    = $slug ? $rl('pdw.gallery', ['slug' => $slug], '/gallery')        : url('/gallery');
 $hrefProd    = $slug ? $rl('pdw.products', ['slug' => $slug], '#')            : '#';
 $hrefPages = $slug ? $rl('pdw.pages', ['slug' => $slug], url('/blogarchive')) : url('/blogarchive');
@@ -98,7 +95,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
         </ul>
       </li>
 
-      <li class="{{ $isActive('contact') }}"><a href="{{ $hrefContact }}">contact us</a></li>
+      {{-- <li class="{{ $isActive('contact') }}"><a href="{{ $hrefContact }}">contact us</a></li> --}}
     </ul>
   </nav>
 </div>

@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 
 class MediaKonten extends Model
 {
+
+    
     // protected $table = 'media_konten';
     // protected $fillable = [
     //     'judul_konten','tipe_konten','konten','file_path','product_id','destinasi_wisata_id'
@@ -32,6 +34,14 @@ class MediaKonten extends Model
     // public function scopeVideo($q) { return $q->where('tipe_konten', 'video'); }
 
      protected $table = 'media_konten';
+     
+     protected $fillable = [
+        'judul_konten', 'tipe_konten', 'konten',
+        'file_path', 'product_id', 'pokdarwis_id',
+    ];
+
+    // relasi opsional
+    public function product() { return $this->belongsTo(Product::class); }
 
     // URL file (assets/*, storage/*, atau http…)
     public function getUrlAttribute(): string

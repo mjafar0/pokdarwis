@@ -33,6 +33,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom-backend.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     
     @yield('page-styles')
 
@@ -60,7 +62,7 @@
                         <div class="site-logo text-center">
                             <h1 class="site-title">
                                 <a href="{{ url('/') }}">
-                                    <img src="{{ asset('assets/images/site-logo.png') }}" alt="Logo">
+                                    {{-- <img src="{{ asset('assets/images/site-logo.png') }}" alt="Logo"> --}}
                                 </a>
                             </h1>
                         </div>
@@ -70,7 +72,7 @@
                                 <a href="#"><i aria-hidden="true" class="fas fa-search"></i></a>
                             </div>
                             <div class="offcanvas-menu d-inline-block">
-                                <a href="#"><i aria-hidden="true" class="icon icon-burger-menu"></i></a>
+                                <a href="#"><i aria-hidden="true" class="icon icon-burger-menu" style="color: gray"></i></a>
                             </div>
                         </div>
                     </div>
@@ -278,7 +280,8 @@
     <a id="backTotop" href="#" class="to-top-icon"><i class="fas fa-chevron-up"></i></a>
 
     <!-- offcanvas -->
-    <div id="offCanvas" class="offcanvas-container">
+    <x-profile-form-pokdarwis> </x-profile-form-pokdarwis>
+    {{-- <div id="offCanvas" class="offcanvas-container">
         <div class="offcanvas-inner">
             <div class="offcanvas-sidebar">
                 <aside class="widget author_widget">
@@ -319,12 +322,13 @@
             </div>
         </div>
         <div class="overlay"></div>
-    </div>
+    </div> --}}
 
     {{-- JS Scripts --}}
     <script src="{{ asset('assets/vendors/jquery/jquery.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/waypoint/waypoints.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
+    <script src="{{ asset('assets/vendors/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/jquery-ui/jquery-ui.min.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/countdown-date-loop-counter/loopcounter.js') }}" defer></script>
     <script src="{{ asset('assets/vendors/counterup/jquery.counterup.min.js') }}" defer></script>

@@ -1001,6 +1001,89 @@ button.round-btn:active {
   }
 }
 
+/* ==== Pagination Fresh Look ==== */
+.post-navigation-wrap { margin-top: 24px; }
+.post-navigation-wrap nav { display: flex; justify-content: center; }
+
+.post-navigation-wrap .pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Tombol default */
+.post-navigation-wrap .pagination li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  color: #27364b;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.post-navigation-wrap .pagination li a:hover {
+  background: linear-gradient(145deg, #f0f7ff, #ffffff);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(39, 54, 75, 0.15);
+}
+
+/* Active */
+.post-navigation-wrap .pagination li.active a {
+  background: linear-gradient(145deg, #3b82f6, #2563eb);
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+  transform: none;
+}
+
+/* Disabled */
+.post-navigation-wrap .pagination li.disabled a {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Ellipses (… tanpa bulat) */
+.post-navigation-wrap .pagination li.ellipsis a {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  padding: 0 4px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: #9ca3af;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: default;
+}
+
+/* Focus ring untuk aksesibilitas */
+.post-navigation-wrap .pagination li a:focus {
+  outline: 3px solid rgba(59, 130, 246, 0.4);
+  outline-offset: 2px;
+}
+
+/* Responsif */
+@media (max-width: 575.98px) {
+  .post-navigation-wrap .pagination { gap: 6px; }
+  .post-navigation-wrap .pagination li a {
+    width: 34px; height: 34px; font-size: 14px;
+  }
+  .post-navigation-wrap .pagination li.ellipsis a { font-size: 16px; }
+}
+
 .outline-btn-white {
   border-color: #ffffff;
   color: #ffffff;
@@ -1959,7 +2042,7 @@ button.round-btn:active {
   margin-bottom: 0;
 }
 .site-logo img {
-  max-width: 200px;
+  max-width: 250px;
   -webkit-transition: opacity 0.4s linear;
   -moz-transition: opacity 0.4s linear;
   -ms-transition: opacity 0.4s linear;

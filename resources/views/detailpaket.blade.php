@@ -3,7 +3,7 @@
 
 
 @section('banner')
-    <x-banner2> 
+    <x-banner2 :pokdarwis="$paket->pokdarwis"> 
     
     </x-banner2>
 @endsection
@@ -62,24 +62,27 @@
 
             {{-- Include & Exclude dari tabel paket_fasilitas --}}
             {{-- @if($paket->fasilitasInclude->isNotEmpty() || $paket->fasilitasExclude->isNotEmpty()) --}}
+            @if($paket->fasilitasInclude->count() > 0 || $paket->fasilitasExclude->count() > 0)
             <article class="package-include bg-light-grey">
-              <h3>INCLUDE & EXCLUDE :</h3>
-              <ul>
-                @php
-                $max = max($paket->fasilitasInclude->count(), $paket->fasilitasExclude->count());
-                @endphp
+                <h3>INCLUDE & EXCLUDE :</h3>
+                <ul>
+                    @php
+                        $max = max($paket->fasilitasInclude->count(), $paket->fasilitasExclude->count());
+                    @endphp
 
-                @for($i = 0; $i < $max; $i++)
-                @if(isset($paket->fasilitasInclude[$i]))
-                    <li><i class="fas fa-check"></i> {{ $paket->fasilitasInclude[$i]->nama_item }}</li>
-                @endif
+                    @for($i = 0; $i < $max; $i++)
+                        @if(isset($paket->fasilitasInclude[$i]))
+                            <li><i class="fas fa-check"></i> {{ $paket->fasilitasInclude[$i]->nama_item }}</li>
+                        @endif
 
-                @if(isset($paket->fasilitasExclude[$i]))
-                    <li><i class="fas fa-times"></i> {{ $paket->fasilitasExclude[$i]->nama_item }}</li>
-                @endif
-                @endfor
-            </ul>
+                        @if(isset($paket->fasilitasExclude[$i]))
+                            <li><i class="fas fa-times"></i> {{ $paket->fasilitasExclude[$i]->nama_item }}</li>
+                        @endif
+                    @endfor
+                </ul>
             </article>
+            @endif
+
             {{-- @endif --}}
           </div>
         </div>
@@ -119,10 +122,13 @@
             class="mt-4"
         />
 
-        
-        </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+@endsection
+
+@section('footer')
+  <x-footer></x-footer>
 @endsection
