@@ -5,19 +5,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 
 //settings
-use App\Http\Controllers\Admin\Settings\UsersController;
+use App\Http\Controllers\Admin\Settings\UsersAdminController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 
 //setting - pengguna - user superadmin
-Route::middleware(['role:admin'])->get('/settings/users/superadmin', [UsersController::class, 'index'])->name('settings-users-superadmin.index');
-Route::middleware(['role:admin'])->get('/settings/users/superadmin/create', [UsersController::class, 'create'])->name('settings-users-superadmin.create');
-Route::middleware(['role:admin'])->get('/settings/users/superadmin/{id}', [UsersController::class, 'show'])->name('settings-users-superadmin.show');
-Route::middleware(['role:admin'])->post('/settings/users/superadmin', [UsersController::class, 'store'])->name('settings-users-superadmin.store');
-Route::middleware(['role:admin'])->get('/settings/users/superadmin/{id}/edit', [UsersController::class, 'edit'])->name('settings-users-superadmin.edit');
-Route::middleware(['role:admin'])->put('/settings/users/superadmin/{id}', [UsersController::class, 'update'])->name('settings-users-superadmin.update');
-Route::middleware(['role:admin'])->delete('/settings/users/superadmin/{id}', [UsersController::class, 'destroy'])->name('settings-users-superadmin.destroy');
+Route::middleware(['role:admin'])->get('/settings/users/superadmin', [UsersAdminController::class, 'index'])->name('settings-users-superadmin.index');
+Route::middleware(['role:admin'])->get('/settings/users/superadmin/create', [UsersAdminController::class, 'create'])->name('settings-users-superadmin.create');
+Route::middleware(['role:admin'])->get('/settings/users/superadmin/{id}', [UsersAdminController::class, 'show'])->name('settings-users-superadmin.show');
+Route::middleware(['role:admin'])->post('/settings/users/superadmin', [UsersAdminController::class, 'store'])->name('settings-users-superadmin.store');
+Route::middleware(['role:admin'])->get('/settings/users/superadmin/{id}/edit', [UsersAdminController::class, 'edit'])->name('settings-users-superadmin.edit');
+Route::middleware(['role:admin'])->put('/settings/users/superadmin/{id}', [UsersAdminController::class, 'update'])->name('settings-users-superadmin.update');
+Route::middleware(['role:admin'])->delete('/settings/users/superadmin/{id}', [UsersAdminController::class, 'destroy'])->name('settings-users-superadmin.destroy');
 
 //setting - pengguna - user pokdarwis
 Route::middleware(['role:admin'])->get('/settings/users/pokdarwis', [UsersController::class, 'index'])->name('settings-users-pokdarwis.index');

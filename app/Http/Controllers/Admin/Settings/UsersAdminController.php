@@ -6,20 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
-use Spatie\Permission\Models\Role;
-use Spatie\Activitylog\Models\Activity;
-
-use Closure;
 use Exception;
-use App\Models\User;
 
+//vendors
 use Yajra\DataTables\DataTables;
 
-use App\Http\Requests\System\UsersRequest;
+//models
+use App\Models\User;
 
-class UsersController extends Controller
+//request
+use App\Http\Requests\Settings\UsersAdminRequest;
+
+class UsersAdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,77 +40,7 @@ class UsersController extends Controller
         {
             return view('admin.settings.users.users-index', []);
         }
-    }    
-    public function show(Request $request, $id)
-    {    
-
-        $tab = $request->query('tab', 'profile');
-
-        try
-        {
-            $user = User::find($id);
-
-            if (is_null($user))
-            {
-                throw new \Exception("User dengan ID ($id) tidak terdaftar.");        
-            }
-
-            $role_name = $request->query('role', $user->default_role);
-            $daftar_role_user = $user->getRoleNames()->toArray();
-
-            if (!in_array($role_name, $daftar_role_user)) 
-            {
-                throw new \Exception("User dengan ID ($id) bukan anggota dari role " . json_encode($daftar_role_user));
-            }
-
-            $data_view = [
-                'tab' => $tab,
-                'data_user' => $user,
-                'daftar_role_user' => $daftar_role_user,
-                'jumlah_role' => count($daftar_role_user),
-                'jumlah_permission' => $user->permissions->count(),
-            ];
-
-            switch($tab)
-            {
-                case 'profile':
-                    $daftar_activity = [];
-                    $data_view['daftar_aktivitas'] = $daftar_activity;
-                break;
-                case 'role':
-                    $daftar_role = Role::select(DB::raw('
-                        id,
-                        name
-                    '))		
-                    ->where('guard_name', 'web')      
-                    ->orderBy('id', 'asc')
-                    ->get()
-                    ->pluck('name', 'name')
-                    ->prepend('- PILIH ROLE -', '')    
-                    ->toArray();
-
-                    $data_view['daftar_role'] = $daftar_role;
-                break;
-                case 'permission':
-                    $role = Role::findByName($role_name);
-
-                    $user_permission = $user->permissions;
-                    $role_permission = $role->permissions;
-                    
-                    $data_view['data_role'] = $role;          
-                    $data_view['role_permissions'] = $role_permission;
-                    $data_view['user_permissions'] = $user_permission->pluck('name','id')->toArray();
-                break;
-            }
-            
-            return view('settings.system.users.user.user-show', $data_view);
-        }
-        catch(\Exception $e)
-        {
-            \Alert::error($e->getMessage())->persistent();
-            return redirect(route('system-users-manage.index'))->with('swal', false);
-        }    
-    }	
+    }        	
     /**
      * Show the form for editing the specified resource.
      *
@@ -120,88 +49,33 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //daftar role
-        $daftar_role = Role::select(DB::raw('
-            id,
-            name
-        '))		
-        ->where('guard_name', 'web')
-        ->whereNotIn('name',  ['alumni', 'mahasiswabaru', 'mahasiswa', 'dosen', 'dosenwali', 'orangtuawali'])
-        ->orderBy('id', 'asc')
-        ->get()
-        ->pluck('name', 'name')
-        ->prepend('- PILIH ROLE -', '')    
-        ->toArray();
-        
-        return view('settings.system.users.user.user-create', [     
-            'daftar_role' => $daftar_role
-        ]);
+        return view('admin.settings.users.user-create');
     }	
-    /**
-     * digunakan untuk membuat token untuk user
-     */
-    public function createtoken(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        if (is_null($user))
-        {
-            \Alert::error("ID user ($id) tidak terdaftar.")->autoClose(3000)->timerProgressBar();
-            return back()->with('swal', false);			      
-        }   
-        else
-        {		
-            $token = $user->createToken('bsi');
-            return $token;
-        }
-    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UsersRequest $request): \Illuminate\Http\RedirectResponse
+    public function store(UsersAdminRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $table_name = User::getTableName();
-        
-        $tableNames = config('permission.table_names');
         
         $validated = $request->validated();
-
-        $user = DB::transaction(function () use ($validated, $request) {      
-            $user = User::create([					
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'nomor_hp' => $validated['nomor_hp'],
-                'username'=> $validated['username'],
-                'password' => Hash::make($validated['password']),        
-                'theme' => 'default',
-                'default_role' => $validated['default_role'],
-                'foto'=> 'resources/userimages/no_photo.png',
-            ]);       			   
-            $user->syncRoles([$validated['default_role']]);          
-
-            $permission = Role::findByName($validated['default_role'])->permissions;
-            $user->givePermissionTo($permission->pluck('name'));
             
-            activity()
-                ->event('store-user')
-                ->withProperties(['ip' => $request->ip()])
-                ->tap(function (Activity $activity) {
-                    $activity->log_name = 'system-user';
-                })
-                ->performedOn($user)
-                ->log("User {$user->name} berhasil dibuat");
+        $route_name = 'settings-users-superadmin.index';
+        
+        $validated['password'] = Hash::make($request->password);
 
-            return $user;
-        });				    
-        \Alert::success('Berhasil', 'User dengan role ' . $user->default_role. '  berhasil disimpan.')->autoClose(3000)->timerProgressBar();
-        return redirect(route('system-users-manage.show', ['id' => $user->id]))->with('swal', true);
+
+        $user = User::create($validated);
+        $user->assignRole(['admin']);
+
+        return redirect(route($route_name))->with('swal', true);
     }	
     public function edit(Request $request, $id)
     {
         $user = User::find($id);
+
         if (is_null($user))
         {
             \Alert::error("User dengan ID ($id) tidak terdaftar.")->autoClose(3000)->timerProgressBar();
@@ -209,25 +83,12 @@ class UsersController extends Controller
         }
         else
         {
-            //daftar role
-            $daftar_role = Role::select(DB::raw('
-                id,
-                name
-            '))		
-            ->where('guard_name', 'web')    
-            ->orderBy('id', 'asc')
-            ->get()
-            ->pluck('name', 'name')
-            ->prepend('- PILIH ROLE -', '')    
-            ->toArray();
-
-            return view('settings.system.users.user.user-edit', [
-                'daftar_role' => $daftar_role,
+            return view('admin.settings.users.user-edit', [
                 'data' => $user,
             ]);
         }
     }
-    public function update(UsersRequest $request, $id)
+    public function update(UsersAdminRequest $request, $id)
     {
         $user = User::find($id);
 
@@ -240,64 +101,18 @@ class UsersController extends Controller
         {
             $validated = $request->validated();
 
-            $user = DB::transaction(function () use ($validated, $user, $request) {				
-                $old_role = $user->default_role;
-                
-                $user->name = $validated['name'];
-                $user->email = $validated['email'];
-                $user->username = $validated['username'];                   
-                $user->nomor_hp = $validated['nomor_hp'];                   
-                $user->nomor_hp2 = $validated['nomor_hp2'];                  
-                
-                if(!is_null($validated['password']))
-                {
-                    $user->password = Hash::make($validated['password']);
-                } 
-                        
-                $user->updated_at = \Helper::tanggal('Y-m-d H:i:s');
-                $user->default_role = $validated['default_role'];  
-                
-                if($request->hasFile('avatar'))
-                {
-                    $user->clearMediaCollection('profil');
-                    
-                    $avatar = $request->file('avatar');
-                    $file_name = $avatar->getClientOriginalName();
-
-                    $user->addMedia($avatar)
-                    ->usingName($file_name)
-                    ->usingFileName($avatar->hashName())
-                    ->toMediaCollection('profil');
-
-                    $objMedia = $user->getFirstMedia('profil');
-                    $user->avatar = 'resources/' . $objMedia->getAttribute('id') . '/' . $objMedia->getAttribute('file_name');          
-                }
-                
-                $user->save();          
-                
-                $default_role = $user->id == 1 ? 'superadmin' : $validated['default_role'];
-                if($default_role != $old_role)
-                {
-                    $user->syncPermissions();
-                    $user->syncRoles([$default_role]);          
-    
-                    $permissions = Role::findByName($default_role)->permissions;
-                    $user->givePermissionTo($permissions);
-                }
-
-                activity()
-                    ->event('store-user')
-                    ->withProperties(['ip' => $request->ip()])
-                    ->tap(function (Activity $activity) {
-                        $activity->log_name = 'system-user';
-                    })
-                    ->performedOn($user)
-                    ->log("User {$user->name} berhasil diubah");
-                return $user;
-            });		
+            if(!is_null($validated['password']))
+            {
+                $user->password = Hash::make($validated['password']);
+            } 
+            
+            $user->update($validated);
+            
             \Alert::success('Berhasil', 'Data user dengan role ' . $user->default_role. '  berhasil diubah.')->autoClose(3000)->timerProgressBar();	
-                        
-            return redirect(route('system-users-manage.show', ['id' => $user->id]))->with('swal', true);
+            
+            $route_name = 'settings-users-superadmin.index';
+
+            return redirect(route($route_name))->with('swal', true);
         }
     }	
     /**

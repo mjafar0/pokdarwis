@@ -9,7 +9,7 @@
             <small class="text-muted">Mengelola user admin</small>
         </div>
         <div class="header-btn">
-            <a href="" class="round-btn">+ Add User</a>
+            <a href="{!! route('settings-users-superadmin.create') !!}" class="round-btn">+ Add User</a>
         </div>
     </div>
 @endsection
