@@ -81,7 +81,7 @@
 			}
 		});
 
-		$('#daftar-user-superadmin').on('click', '#btnhapus', function () {
+		$('#daftar-user-admin').on('click', '#btnhapus', function () {
 			var tr = $(this).closest('tr');
 			var data = datatable.DataTable().row(tr).data();
 			$('#nama-user').text(data.name);

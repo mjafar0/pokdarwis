@@ -67,22 +67,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
           @endforelse
         </ul>
       </li>
-
-      <li class="menu-item-has-children">
-        <a href="">Upload</a>
-        <ul>
-          <li>
-            <a href="{!! route('pokdarwis.product.index') !!}">Upload Produk</a>
-          </li>
-          <li>
-            <a href="{!! route('pokdarwis.paket.index') !!}">Upload Paket</a>
-          </li>
-          <li>
-            <a href="{!! route('pokdarwis.konten.index') !!}">Upload Konten</a>
-          </li>
-        </ul>
-      </li>
-
+      @if (auth()->user()->role === 'admin')
       <li class="menu-item-has-children {{ $isActive('pages') }}">
         <a href="#">Settings</a>
         <ul>          
@@ -96,6 +81,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
           </li>                    
         </ul>
       </li>
+      @endif
     </ul>
   </nav>
 </div>
