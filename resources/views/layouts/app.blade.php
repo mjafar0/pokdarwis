@@ -63,11 +63,13 @@
                     </div>
 
                     <div class="header-icon text-right">
-                        <div class="header-search-icon d-inline-block">
+                        {{-- <div class="header-search-icon d-inline-block">
                             <a href="#"><i aria-hidden="true" class="fas fa-search"></i></a>
-                        </div>
-                        <div class="offcanvas-menu d-inline-block">
-                            <a href="#"><i aria-hidden="true" class="icon icon-burger-menu"></i></a>
+                        </div> --}}
+                        <div class="header-search-icon d-inline-block">
+                        <a href="{{ route('pokdarwis.profile') }}">
+                            <i aria-hidden="true" class="fas fa-user"></i>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -79,9 +81,9 @@
                 <div class="bottom-header-inner d-flex justify-content-between align-items-center">
                     <div class="header-social social-icon">
                         <ul>
-                            <li><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="https://www.twitter.com"  target="_blank"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="https://www.youtube.com"  target="_blank"><i class="fab fa-youtube"></i></a></li>
+                            <li><a href="https://www.facebook.com/disbudparbintan?_rdc=2&_rdr#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="https://x.com/disbudparbintan"  target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCJIYZxQ_PtFe2-Ck77qXZDg"  target="_blank"><i class="fab fa-youtube"></i></a></li>
                         </ul>
                     </div>
 
@@ -118,14 +120,15 @@
         @yield('main')
 
         {{-- Video --}}
-            <div class="bg-img-fullcallback" style="background-image: url(assets/images/guruntelagabiru.jpg);">
+        
+            <div class="bg-img-fullcallback" style="background-image: url(assets/images/ytcovers.jpg);">
                   <div class="overlay"></div>
                   <div class="container">
                      <div class="row">
                         <div class="col-lg-8 offset-lg-2 text-center">
                            <div class="callback-content">
                               <div class="video-button">
-                                 <a  id="video-container" data-fancybox="video-gallery" href="https://www.youtube.com/watch?v=2OYar8OHEOU">
+                                 <a  id="video-container" data-fancybox="video-gallery" href="https://youtu.be/kjGlZK3asTU?si=frWRwRXj4rYNuHWu">
                                     <i class="fas fa-play"></i>
                                  </a>
                               </div>
@@ -141,6 +144,7 @@
                   </div>
             </div>
 
+                        <x-counter :items="$counterItems" />
     </main>
     
 
@@ -156,7 +160,7 @@
                                     <a href="{{ url('/') }}"><img src="{{ asset('assets/images/site-logo.png') }}" alt=""></a>
                                 </div>
                                 <div class="textwidget widget-text">
-                                    Urna ratione ante harum provident, eleifend, vulputate molestiae proin fringilla, praesentium magna conubia at perferendis, pretium, aenean aut ultrices.
+                                    Kantor Dinas Kebudayaan dan Pariwisata Bintan
                                 </div>
                             </aside>
                         </div>
@@ -169,7 +173,7 @@
                                 <ul>
                                     <li>
                                         <figure class="post-thumb">
-                                            <a href="#"><img src="{{ asset('assets/images/img21.jpg') }}" alt=""></a>
+                                            <a href="#"><img src="{{ asset('assets/images/bintantourism.jpg') }}" alt=""></a>
                                         </figure>
                                         <div class="post-content">
                                             <h6><a href="#">BEST JOURNEY TO PEACEFUL PLACES</a></h6>
@@ -180,7 +184,7 @@
                                     </li>
                                     <li>
                                         <figure class="post-thumb">
-                                            <a href="#"><img src="{{ asset('assets/images/img22.jpg') }}" alt=""></a>
+                                            <a href="#"><img src="{{ asset('assets/images/bintantourism8.jpg') }}" alt=""></a>
                                         </figure>
                                         <div class="post-content">
                                             <h6><a href="#">TRAVEL WITH FRIENDS IS BEST</a></h6>
@@ -203,10 +207,10 @@
                                             <a href="tel:+01988256203"><i class="icon icon-phone1"></i> +01(988) 256 203</a>
                                         </li>
                                         <li>
-                                            <a href="mailto:info@domain.com"><i class="icon icon-envelope1"></i> info@domain.com</a>
+                                            <a href="https://bintantourism.com/"><i class="fas fa-globe"></i> Bintan Tourism</a>
                                         </li>
                                         <li>
-                                            <i class="icon icon-map-marker1"></i> 3146 Koontz, California
+                                            <i class="icon icon-map-marker1"></i> Jl. Trikora Km.36, Teluk Bakau, Kecamatan Gunung , Kabupaten Bintan, Kepulauan Riau 29151
                                         </li>
                                     </ul>
                                 </div>
@@ -216,7 +220,25 @@
                         <div class="col-lg-3 col-sm-6">
                             <aside class="widget">
                                 <h3 class="widget-title">Gallery</h3>
+                                @php
+                                $images = [];
+                                for ($i = 1; $i <= 8; $i++) {
+                                    $path = "assets/images/bintantourism{$i}.jpg";
+                                    if (file_exists(public_path($path))) $images[] = $path;
+                                }
+                                @endphp
+
                                 <div class="gallery gallery-colum-3">
+                                @foreach($images as $idx => $img)
+                                    <figure class="gallery-item">
+                                    <a href="{{ asset($img) }}" data-fancybox="gallery-1">
+                                        <img src="{{ asset($img) }}" alt="Bintan Tourism {{ $idx+1 }}" loading="lazy"
+                                            onerror="this.onerror=null;this.src='{{ asset('assets/images/default.png') }}'">
+                                    </a>
+                                    </figure>
+                                @endforeach
+                                </div>
+                                {{-- <div class="gallery gallery-colum-3">
                                     @for ($i = 21; $i <= 26; $i++)
                                         <figure class="gallery-item">
                                             <a href="{{ asset("assets/images/img$i.jpg") }}" data-fancybox="gallery-1">
@@ -224,7 +246,7 @@
                                             </a>
                                         </figure>
                                     @endfor
-                                </div>
+                                </div> --}}
                             </aside>
                         </div>
                         
@@ -248,11 +270,11 @@
                         <div class="col-lg-6 text-right">
                             <div class="social-icon">
                                 <ul>
-                                    <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="https://www.twitter.com/"  target="_blank"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="https://www.youtube.com/"  target="_blank"><i class="fab fa-youtube"></i></a></li>
-                                    <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                                    <li><a href="https://www.linkedin.com/"  target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                                    <li><a href="https://www.facebook.com/disbudparbintan?_rdc=2&_rdr#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="https://x.com/disbudparbintan"  target="_blank"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="https://www.youtube.com/channel/UCJIYZxQ_PtFe2-Ck77qXZDg"  target="_blank"><i class="fab fa-youtube"></i></a></li>
+                                    <li><a href="https://www.instagram.com/bintantourism/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                                    {{-- <li><a href="https://www.linkedin.com/"  target="_blank"><i class="fab fa-linkedin"></i></a></li> --}}
                                 </ul>
                             </div>
                             <div class="footer-menu">
@@ -271,7 +293,7 @@
 
         <div class="bottom-footer">
             <div class="container">
-                <div class="copy-right text-center">Copyright &copy; 2022 Traveler. All rights reserved.</div>
+                <div class="copy-right text-center">Copyright &copy; 2025 Bintan Tourism. All rights reserved.</div>
             </div>
         </div>
     </footer>

@@ -157,7 +157,7 @@
               <div class="col-md-6">
                 <label class="form-label">Cover</label>
                 <input type="file" name="img" class="form-control" accept="image/*" onchange="previewAdd(this)">
-                <div class="form-text">PNG/JPG/WEBP maks 3MB.</div>
+                <div class="form-text">PNG/JPG/WEBP maks 5MB.</div>
               </div>
               <div class="col-md-6">
                 <label class="form-label">Preview</label>

@@ -55,6 +55,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
       <li class="{{ $isActive('gallery') }}"><a href="{{ $hrefDest }}">Gallery</a></li>
       
       {{-- TOUR: aktif jika active="tour" ATAU route sekarang pokdarwis.show --}}
+      @if (auth()->user()->role === 'wisatawan')
       <li class="menu-item-has-children {{ $isActive('tour') ?: $activeTourByRoute }}">
         <a href="{{ $hrefTour }}">tour</a>
         <ul>
@@ -67,6 +68,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
           @endforelse
         </ul>
       </li>
+      @endif
 
       <li class="menu-item-has-children">
         <a href="">Upload</a>
@@ -83,6 +85,16 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
         </ul>
       </li>
 
+      <li class="menu-item-has-children">
+      <a href="">Blog</a>
+        <ul>
+          <li>
+            <a href="{!! route('pokdarwis.posts.index') !!}">Post Blog</a>
+          </li>
+        </ul>
+      </li>
+      
+      @if (auth()->user()->role === 'admin')
       <li class="menu-item-has-children {{ $isActive('pages') }}">
         <a href="#">Settings</a>
         <ul>          
@@ -96,6 +108,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
           </li>                    
         </ul>
       </li>
+      @endif
     </ul>
   </nav>
 </div>

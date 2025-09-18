@@ -6,55 +6,70 @@
   <x-banner :slides="
   [
 
-      ['image'=>'assets/images/banner-img1.jpg',
-      'title'=>'JOURNEY TO EXPLORE WORLD',
+      ['image'=>'assets/images/bintantourism.jpg',
+      'title'=>'JOURNEY TO EXPLORE BINTAN',
       'text'=>'WELCOME',
       'primaryHref'=>route('pokdarwis'),
     //   'primaryText'=>'EXPLORE'
     ],
       
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'BAJAKAH',
+      'text'=>'',
+      'primaryHref'=>route('pokdarwis'),
+      // 'primaryText'=>'EXPLORE'
+      ],
+
+      ['image'=>'assets/images/img7.jpg',
+      'title'=>'GUDEM BEE FARM',
+      'text'=>'',
+      'primaryHref'=>route('pokdarwis'),
+      // 'primaryText'=>'EXPLORE'
+      ],
+
       ['image'=>'assets/images/guruntelagabiru.jpg',
-      'title'=>'BEAUTIFUL PLACE TO VISIT',
-      'text'=>'...',
+      'title'=>'GURUN TELAGA BIRU',
+      'text'=>'',
       'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
+      // 'primaryText'=>'EXPLORE'
+      ],
 
       ['image'=>'assets/images/img7.jpg',
-      'title'=>'BEAUTIFUL PLACE TO VISIT',
-      'text'=>'...',
+      'title'=>'LESUNG EMAS',
+      'text'=>'',
       'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
+      // 'primaryText'=>'EXPLORE'
+      ],
 
       ['image'=>'assets/images/img7.jpg',
-      'title'=>'BEAUTIFUL PLACE TO VISIT',
-      'text'=>'...',
+      'title'=>'MANGGAR ABADI',
+      'text'=>'',
       'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
+      // 'primaryText'=>'EXPLORE'
+      ],
 
       ['image'=>'assets/images/img7.jpg',
-      'title'=>'BEAUTIFUL PLACE TO VISIT',
-      'text'=>'...',
+      'title'=>'PEMANCINGAN WONG DHESO',
+      'text'=>'',
       'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
+      // 'primaryText'=>'EXPLORE'
+      ],
 
       ['image'=>'assets/images/img7.jpg',
-      'title'=>'BEAUTIFUL PLACE TO VISIT',
-      'text'=>'...',
+      'title'=>'SUMAT',
+      'text'=>'',
       'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
-
+      // 'primaryText'=>'EXPLORE'
+      ],
+      
       ['image'=>'assets/images/img7.jpg',
-      'title'=>'BEAUTIFUL PLACE TO VISIT',
-      'text'=>'...',
+      'title'=>'TEKAD TANI',
+      'text'=>'',
       'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
-
-      ['image'=>'assets/images/img7.jpg',
-      'title'=>'BEAUTIFUL PLACE TO VISIT',
-      'text'=>'...',
-      'primaryHref'=>route('pokdarwis'),
-      'primaryText'=>'EXPLORE'],
+      // 'primaryText'=>'EXPLORE'
+      ],
   ]" class="mb-5"/>
+  
 
 @endsection
 
@@ -67,6 +82,7 @@
                     ctaHref="{{ url('/destination') }}"
                     ctaText="More Destination"
                 />
+
 
 <section class="inner-about-wrap py-2">
     <div class="container">

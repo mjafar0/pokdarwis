@@ -1,7 +1,7 @@
 @props([
   'active'   => null,
-  'bookHref' => '#',
-  'bookText' => 'Book Now',
+  // 'bookHref' => '#',
+  // 'bookText' => 'Book Now',
   'logo'     => asset('assets/images/site-logo.png'),
   'phone'    => '+01 (977) 2599 12',
 ])
@@ -52,10 +52,14 @@
         {{-- navbar kamu --}}
         <x-navbar :pokdarwis="$pokdarwis ?? null" :active="$active" />
         {{-- <x-navbar :pokdarwis="$pokdarwis ?? null" active="packages" /> --}}
-
-        <div class="header-btn">
+        <div class="bottom-header-inner d-flex justify-content-between align-items-center">
+                        <div class="header-btn">
+                            <a href="{{ url('/login') }}"class="round-btn" style="all:unset; color:white; cursor:pointer; display:inline-block;">LOG IN</a>
+                        </div>
+                    </div>
+        {{-- <div class="header-btn">
           <a href="{{ $bookHref }}" class="round-btn">{{ $bookText }}</a>
-        </div>
+        </div> --}}
       </div>
     </div>
   </div>

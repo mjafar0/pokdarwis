@@ -43,68 +43,7 @@
   <div id="page" class="page">
 
     {{-- Header global (navbar situs) --}}
-    <header id="masthead" class="site-header">
-        <div class="top-header">
-            <div class="container">
-                <div class="top-header-inner">
-                    <div class="header-contact text-left">
-                        <a href="tel:01977259912">
-                            <i aria-hidden="true" class="icon icon-phone-call2"></i>
-                            <div class="header-contact-details">
-                                <span class="contact-label">For Further Inquires :</span>
-                                <h5 class="header-contact-no">+01 (977) 2599 12</h5>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="site-logo text-center">
-                        <h1 class="site-title">
-                            <a href="{{ url('/') }}">
-                                <img src="{{ asset('assets/images/site-logo.png') }}" alt="Logo">
-                            </a>
-                        </h1>
-                    </div>
-
-                    <div class="header-icon text-right">
-                        <div class="header-search-icon d-inline-block">
-                            <a href="#"><i aria-hidden="true" class="fas fa-search"></i></a>
-                        </div>
-                        <div class="offcanvas-menu d-inline-block">
-                            <a href="#"><i aria-hidden="true" class="icon icon-burger-menu"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-header">
-            <div class="container">
-                <div class="bottom-header-inner d-flex justify-content-between align-items-center">
-                    <div class="header-social social-icon">
-                        <ul>
-                            <li><a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="https://www.twitter.com"  target="_blank"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="https://www.youtube.com"  target="_blank"><i class="fab fa-youtube"></i></a></li>
-                        </ul>
-                    </div>
-
-                    {{-- Navigation Bar --}}
-                    <x-navbar active="pages">
-
-                    </x-navbar>
-
-                    <div class="bottom-header-inner d-flex justify-content-between align-items-center">
-                        <div class="header-btn">
-                            <a href="{{ url('/login') }}"class="round-btn" style="all:unset; color:white; cursor:pointer; display:inline-block;">LOG IN</a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="mobile-menu-container"></div>
-    </header>
+    <x-site-header active="pages" />
 
     <main id="content" class="site-main">
 
@@ -137,8 +76,9 @@
                         <div class="profile">
                         <figure class="avatar">
                             <a href="#">
-                            {{-- Jika Pokdarwis punya logo / foto --}}
-                            <img src="{{ $post->pokdarwis->logo ?? asset('assets/images/img20.jpg') }}" alt="{{ $post->pokdarwis->name_pokdarwis }}">
+                              <img src="{{ $post->pokdarwis->img ? asset('storage/'.$post->pokdarwis->img) : asset('assets/images/img20.jpg') }}"
+                                  alt="{{ $post->pokdarwis->name_pokdarwis }}"
+                                  style="width:100px;height:100px;object-fit:cover;border-radius:50%;">
                             </a>
                         </figure>
                         <div class="text-content">
@@ -151,9 +91,9 @@
                         </div>
                         <div class="socialgroup">
                             <ul>
-                            <li><a target="_blank" href="#"><i class="fab fa-facebook"></i></a></li>
-                            <li><a target="_blank" href="#"><i class="fab fa-twitter"></i></a></li>
-                            <li><a target="_blank" href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a target="_blank" href="{{ $post->pokdarwis->facebook }}"><i class="fab fa-facebook"></i></a></li>
+                            <li><a target="_blank" href="{{ $post->pokdarwis->twitter }}"><i class="fab fa-twitter"></i></a></li>
+                            <li><a target="_blank" href="{{ $post->pokdarwis->instagram }}"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                         </div>
                         </div>
@@ -168,7 +108,7 @@
                         <li>
                           <figure class="post-thumb">
                             <a href="{{ route('posts.show',$rp->slug) }}">
-                              <img src="{{ $rp->cover ? asset($rp->cover) : asset('assets/images/noimage.jpg') }}" alt="">
+                              <img src="{{ $rp->cover_url ? asset($rp->cover_url) : asset('assets/images/noimage.jpg') }}" alt="">
                             </a>
                           </figure>
                           <div class="post-content">
@@ -196,8 +136,154 @@
       </div>
 
     </main>
+<footer id="colophon" class="site-footer footer-primary">
+        <div class="top-footer">
+            <div class="container">
+                <div class="upper-footer">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6">
+                            <aside class="widget widget_text">
+                                <div class="footer-logo">
+                                    <a href="{{ url('/') }}"><img src="{{ asset('assets/images/site-logo.png') }}" alt=""></a>
+                                </div>
+                                <div class="textwidget widget-text">
+                                    Kantor Dinas Kebudayaan dan Pariwisata Bintan
+                                </div>
+                            </aside>
+                        </div>
 
-    <x-footer />
+                        
+                    
+                        <div class="col-lg-3 col-sm-6">
+                            <aside class="widget widget_latest_post widget-post-thumb">
+                                <h3 class="widget-title">RECENT POST</h3>
+                                <ul>
+                                    <li>
+                                        <figure class="post-thumb">
+                                            <a href="#"><img src="{{ asset('assets/images/bintantourism.jpg') }}" alt=""></a>
+                                        </figure>
+                                        <div class="post-content">
+                                            <h6><a href="#">BEST JOURNEY TO PEACEFUL PLACES</a></h6>
+                                            <div class="entry-meta">
+                                                <span class="posted-on"><a href="#">February 17, 2022</a></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <figure class="post-thumb">
+                                            <a href="#"><img src="{{ asset('assets/images/bintantourism8.jpg') }}" alt=""></a>
+                                        </figure>
+                                        <div class="post-content">
+                                            <h6><a href="#">TRAVEL WITH FRIENDS IS BEST</a></h6>
+                                            <div class="entry-meta">
+                                                <span class="posted-on"><a href="#">February 17, 2022</a></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </aside>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6">
+                            <aside class="widget widget_text">
+                                <h3 class="widget-title">CONTACT US</h3>
+                                <div class="textwidget widget-text">
+                                    <p>Feel free to contact and<br/>reach us !!</p>
+                                    <ul>
+                                        <li>
+                                            <a href="tel:+01988256203"><i class="icon icon-phone1"></i> +01(988) 256 203</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://bintantourism.com/"><i class="fas fa-globe"></i> Bintan Tourism</a>
+                                        </li>
+                                        <li>
+                                            <i class="icon icon-map-marker1"></i> Jl. Trikora Km.36, Teluk Bakau, Kecamatan Gunung , Kabupaten Bintan, Kepulauan Riau 29151
+                                        </li>
+                                    </ul>
+                                </div>
+                            </aside>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-6">
+                            <aside class="widget">
+                                <h3 class="widget-title">Gallery</h3>
+                                @php
+                                $images = [];
+                                for ($i = 1; $i <= 8; $i++) {
+                                    $path = "assets/images/bintantourism{$i}.jpg";
+                                    if (file_exists(public_path($path))) $images[] = $path;
+                                }
+                                @endphp
+
+                                <div class="gallery gallery-colum-3">
+                                @foreach($images as $idx => $img)
+                                    <figure class="gallery-item">
+                                    <a href="{{ asset($img) }}" data-fancybox="gallery-1">
+                                        <img src="{{ asset($img) }}" alt="Bintan Tourism {{ $idx+1 }}" loading="lazy"
+                                            onerror="this.onerror=null;this.src='{{ asset('assets/images/default.png') }}'">
+                                    </a>
+                                    </figure>
+                                @endforeach
+                                </div>
+                                {{-- <div class="gallery gallery-colum-3">
+                                    @for ($i = 21; $i <= 26; $i++)
+                                        <figure class="gallery-item">
+                                            <a href="{{ asset("assets/images/img$i.jpg") }}" data-fancybox="gallery-1">
+                                                <img src="{{ asset("assets/images/img$i.jpg") }}" alt="">
+                                            </a>
+                                        </figure>
+                                    @endfor
+                                </div> --}}
+                            </aside>
+                        </div>
+                        
+                    </div>
+
+                    
+                </div>
+                
+
+                <div class="lower-footer">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="footer-newsletter">
+                                <p>Subscribe our newsletter for more update & news !!</p>
+                                <form class="newsletter">
+                                    <input type="email" name="email" placeholder="Enter Your Email">
+                                    <button type="submit" class="outline-btn outline-btn-white">Subscribe</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <div class="social-icon">
+                                <ul>
+                                    <li><a href="https://www.facebook.com/disbudparbintan?_rdc=2&_rdr#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="https://x.com/disbudparbintan"  target="_blank"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="https://www.youtube.com/channel/UCJIYZxQ_PtFe2-Ck77qXZDg"  target="_blank"><i class="fab fa-youtube"></i></a></li>
+                                    <li><a href="https://www.instagram.com/bintantourism/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                                    {{-- <li><a href="https://www.linkedin.com/"  target="_blank"><i class="fab fa-linkedin"></i></a></li> --}}
+                                </ul>
+                            </div>
+                            <div class="footer-menu">
+                                <ul>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Term & Condition</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bottom-footer">
+            <div class="container">
+                <div class="copy-right text-center">Copyright &copy; 2025 Bintan Tourism. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
 
     <a id="backTotop" href="#" class="to-top-icon"><i class="fas fa-chevron-up"></i></a>
   </div>

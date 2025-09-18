@@ -1,6 +1,7 @@
 @extends('layouts.app-backend')
 @section('page-title','Upload • Konten')
 
+
 @section('page-header')
   <nav class="admin-breadcrumb" aria-label="breadcrumb">
     <ol class="breadcrumb mb-0">
@@ -54,20 +55,44 @@
         <div class="col-12 col-sm-6 col-lg-4">
           <div class="card h-100 border-0 shadow-sm product-card">
             <div class="position-relative rounded-top overflow-hidden" style="aspect-ratio:16/10;background:#f7f7f9">
-              @if($k->tipe_konten === 'foto')
-                <img src="{{ $k->url }}" alt="{{ $k->judul_konten }}" class="w-100 h-100" style="object-fit:cover;">
-              @else
-                {{-- video: jika url YouTube tampilkan thumbnail, kalau mp4 tampilkan tag video --}}
-                @if(Str::startsWith($k->file_path,['http://','https://']))
-                  <iframe src="{{ $k->file_path }}" class="w-100 h-100" style="border:0;"></iframe>
-                @else
-                  <video class="w-100 h-100" style="object-fit:cover;" controls>
-                    <source src="{{ $k->url }}" type="video/mp4">
-                  </video>
-                @endif
-              @endif
-              <span class="price-chip shadow-sm text-uppercase small">{{ $k->tipe_konten }} • {{ $k->konten }}</span>
-            </div>
+  @if($k->tipe_konten === 'foto')
+    <img src="{{ $k->url }}" alt="{{ $k->judul_konten }}" class="w-100 h-100" style="object-fit:cover;">
+  @else
+    @php
+      // Tentukan sumber path/url video
+      $filePath = $k->file_path ?? $k->url;
+      $videoId  = null;
+
+      // Ekstrak ID YouTube
+      if (\Illuminate\Support\Str::contains($filePath, 'youtube.com/watch')) {
+          parse_str(parse_url($filePath, PHP_URL_QUERY), $q);
+          $videoId = $q['v'] ?? null;
+      } elseif (\Illuminate\Support\Str::contains($filePath, 'youtu.be/')) {
+          $videoId = trim(basename(parse_url($filePath, PHP_URL_PATH)));
+      }
+    @endphp
+
+    @if($videoId)
+      {{-- Embed YouTube --}}
+      <iframe
+        class="w-100 h-100" style="border:0;object-fit:cover;"
+        src="https://www.youtube.com/embed/{{ $videoId }}?rel=0&modestbranding=1"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    @else
+      {{-- File video lokal/mp4 --}}
+      <video class="w-100 h-100" style="object-fit:cover;" controls controlsList="nodownload noplaybackrate">
+        <source src="{{ $k->url }}" type="video/mp4">
+      </video>
+    @endif
+  @endif
+
+  <span class="price-chip shadow-sm text-uppercase small">
+    {{ $k->tipe_konten }} • {{ $k->konten }}
+  </span>
+</div>
             <div class="card-body">
               <h5 class="card-title mb-1 text-truncate" title="{{ $k->judul_konten }}">{{ $k->judul_konten }}</h5>
               @if($k->product)

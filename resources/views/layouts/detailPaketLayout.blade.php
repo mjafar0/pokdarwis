@@ -60,7 +60,7 @@
             $bookHref = route('booking.pokdarwis', $ctxPokdarwis);
          }
       @endphp
-   <x-site-header active="about" :bookHref="$bookHref" bookText="Book Now" />
+   <x-site-header active="tour"  />
     
 
     <main id="content" class="site-main">

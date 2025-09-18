@@ -1,4 +1,12 @@
 {{-- resources/views/pokdarwis.blade.php --}}
+@php
+  $counters = [
+    ['value' => 80,  'suffix' => 'K+', 'label' => 'Kunjungan Wisatawan'],
+    ['value' => 18,  'suffix' => '+',  'label' => 'Total Destinations'],
+    ['value' => 220, 'suffix' => '+',  'label' => 'Reviews'],
+  ];
+@endphp
+
 @extends('layouts.pokdarwisLayout')
 @section('title', $pokdarwis->name_pokdarwis)
 
@@ -15,17 +23,22 @@
         <div class="col-lg-8">
           <div class="about-content">
             <figure class="about-image mb-4">
-              <img src="{{ asset('assets/images/guruntelagabiru.jpg') }}" alt="" class="img-fluid">
-              <div class="about-image-content">
-                <h3>WE ARE BEST FOR TOURS & TRAVEL !</h3>
-                {{-- <h3>{{ $pokdarwis->name_pokdarwis }}</h3> --}}
-              </div>
-            </figure>
+            @php
+              $imgPath = $pokdarwis->content_img 
+                ? asset('storage/'.$pokdarwis->content_img)   // file upload di storage/app/public
+                : asset('assets/images/default.png'); // fallback
+            @endphp
+
+            <img src="{{ $imgPath }}" alt="{{ $pokdarwis->name_pokdarwis }}" class="img-fluid">
+
+            <div class="about-image-content">
+              <h3>WE ARE BEST FOR TOURS & TRAVEL !</h3>
+              {{-- <h3>{{ $pokdarwis->name_pokdarwis }}</h3> --}}
+            </div>
+          </figure>
             <h2>{{ $pokdarwis->name_pokdarwis }}</h2>
-            {{-- <p>{{ $pokdarwis->deskripsi }}</p> --}}
-            <p>Dictumst voluptas qui placeat omnis repellendus, est assumenda dolores facilisis, nostra, inceptos. Ullam laudantium deserunt duis platea. Fermentum diam, perspiciatis cupidatat justo quam voluptate, feugiat, quaerat. Delectus aute scelerisque blanditiis venenatis aperiam rem. Tempore porttitor orci eligendi velit vel scelerisque minus scelerisque? Dis! Aenean! Deleniti esse aperiam adipiscing, sapiente? </p>
-            <p>Ratione conubia incididunt nullam! Sodales, impedit, molestias consectetuer itaque magni ut neque, lobortis expedita corporis voluptatem natus praesent mollis quidem auctor curae, mattis laboris diamlorem iure nullam esse? Pariatur primis.</p>         
-          </div>
+            <p>{{ $pokdarwis->deskripsi2 }}</p>
+            </div>
         </div>
 
         {{-- Konten Side Bar --}}
@@ -55,15 +68,29 @@
         {{-- Konten Side Bar --}}
         
         {{-- Wisata Card --}}
+{{-- 
         <x-video-wisata
-           bg="assets/images/guruntelagabiru.jpg"
-           video="https://www.youtube.com/watch?v=2OYar8OHEOU"
-           title="ARE YOU READY TO TRAVEL? REMEMBER US !!"
-           {{-- primaryHref="{{ url('package') }}"
-           primaryText="View Packages" --}}
-           {{-- secondaryHref="{{ url('about') }}"
-           secondaryText="Learn More" --}}
+            :bg="$coverUrl"
+            :video="$videoUrl"
+            title="ARE YOU READY TO TRAVEL? REMEMBER US !!"
+            :description="$pokdarwis->deskripsi"
+        /> --}}
+
+
+        <x-video-wisata
+            :bg="$pokdarwis->cover_img 
+                    ? asset('storage/'.$pokdarwis->cover_img) 
+                    : asset('assets/images/default-cover.jpg')" 
+            :video="$pokdarwis->content_video 
+                    ? (\Illuminate\Support\Str::startsWith($pokdarwis->content_video, ['http://','https://','//']) 
+                        ? $pokdarwis->content_video 
+                        : asset('storage/'.$pokdarwis->content_video))
+                    : 'https://www.youtube.com/watch?v=2OYar8OHEOU'" 
+            title="ARE YOU READY TO TRAVEL? REMEMBER US !!"
         />
+        
+        <x-counter :items="$counterItems" />
+
         <div class="container">
           
                   @if($pakets->count() > 0)
@@ -82,17 +109,19 @@
                   <div class="row">
                       @foreach ($pakets as $p)  
                           <x-wisata-card
-                              :title="$p->nama_paket"
-                              :image="$p->cover_url ?? $p->img"
-                              :detail-link="route('paket.show', $p)" 
-                              :description="\Illuminate\Support\Str::limit(strip_tags($p->deskripsi ?? ''), 120)"
-                              :duration="$p->waktu_penginapan"
-                              :pax="$p->pax"
-                              :location="$p->lokasi"
-                              :currency="$p->currency"
-                              :price="$p->harga"
-                              :book-link="route('paket.show', $p)"
-                          />
+                            :title="$p->nama_paket"
+                            :image="$p->cover_url ?? $p->img"
+                            :detail-link="route('paket.show', $p)"
+                            :description="\Illuminate\Support\Str::limit(strip_tags($p->deskripsi ?? ''), 120)"
+                            :duration="$p->waktu_penginapan"
+                            :pax="$p->pax"
+                            :location="$p->lokasi"
+                            :currency="$p->currency"
+                            :price="$p->harga"
+                            :book-link="route('paket.show', $p)"          {{-- tombol tetap ke detail/booking --}}
+                            :increment-url="route('paket.book.intent', $p)" {{-- <-- increment visit --}}
+                            increment-mode="beacon"                        {{-- 'beacon' = mulus; 'ajax' = nunggu lalu redirect --}}
+                        />
                       @endforeach
                   </div>
                   @endif
@@ -205,35 +234,30 @@
                     title="POPULAR PRODUCT"
                     text="Produk-produk pilihan dari berbagai Pokdarwis."
                     :items="$items"
+                    :pdw="$pokdarwis"
                 />
                 @endif
 
-                @if ($galleryItems->count()>0)
                 <div class="col-lg-8 offset-lg-2 text-sm-center">
-                        <div class="section-heading">
-                           {{-- <h5 class="sub-title">PHOTO GALLERY</h5> --}}
-                           <h2 class="section-title">PHOTO'S GALLERY</h2>
-                           <p>Take a closer look through our photo collection, capturing the beauty of destinations, the warmth of communities, and the unique experiences we offer. Every picture tells a story worth remembering.</p>
-                        </div>
-                     </div>
+                  <div class="section-heading">
+                    <h2 class="section-title">PHOTO'S GALLERY</h2>
+                    <p>Take a closer look through our photo collection…</p>
+                  </div>
+                </div>
 
-                     <x-gallery-card :items="$galleryItems" gallery="pokdarwis-{{ $pokdarwis->id }}" class="my-5" />
-                @endif
+                <x-gallery-card2 :items="$galleryPhotos" gallery="pokdarwis-{{ $pokdarwis->id }}" class="my-5" />
                 <div class="grid blog-inner row">
                 
-                      {{-- <x-gallery-card :items="
-                    [
-                        ['src' => 'assets/images/guruntelagabiru.jpg','alt'=>'Pantai'],
-                        ['src' => 'assets/images/img11.jpg','alt'=>'Gunung'],
-                        ['src' => 'assets/images/img12.jpg','alt'=>'Hutan'],
-                        ['src' => 'assets/images/img13.jpg','alt'=>'Danau'],
-                        ['src' => 'assets/images/guruntelagabiru.jpg','alt'=>'Pantai'],
-                        ['src' => 'assets/images/img11.jpg','alt'=>'Gunung'],
-                        ['src' => 'assets/images/img12.jpg','alt'=>'Hutan'],
-                        ['src' => 'assets/images/img13.jpg','alt'=>'Danau'],
-                    ]" gallery="wisata-gallery" class="my-5" 
-                /> --}}
       </div>
+      
+
+
+        <x-review-card :reviews="$reviews"
+          {{-- subtitle="CLIENT'S REVIEWS" --}}
+          title="TRAVELLER'S TESTIMONIAL"
+          intro="Apa kata para wisatawan tentang {{ $pokdarwis->name_pokdarwis }}"
+        />
+        
     </div>
   </section>
 @endsection

@@ -32,7 +32,7 @@ class PaketWisataController extends Controller
             'lokasi'           => 'required|string|max:100',
             'harga'            => 'required|numeric|min:0',
             'currency'         => 'nullable|string|max:10',
-            'img'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'img'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         $pokdarwis = Auth::user()->pokdarwis;
@@ -68,7 +68,7 @@ class PaketWisataController extends Controller
             'lokasi'           => 'required|string|max:100',
             'harga'            => 'required|numeric|min:0',
             'currency'         => 'nullable|string|max:10',
-            'img'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'img'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         if ($r->hasFile('img')) {

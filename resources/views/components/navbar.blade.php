@@ -53,7 +53,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
       
       {{-- TOUR: aktif jika active="tour" ATAU route sekarang pokdarwis.show --}}
       <li class="menu-item-has-children {{ $isActive('tour') ?: $activeTourByRoute }}">
-        <a href="{{ $hrefTour }}">tour</a>
+        <a href="">tour</a>
         <ul>
           @forelse(($pokdarwisMenu ?? []) as $pd)
             <li class="{{ $isTourCurrent($pd) }}">

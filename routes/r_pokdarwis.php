@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiGenerateController;
 use Illuminate\Support\Facades\Route;
 use \Illuminate\Http\Request;
 
@@ -9,6 +10,7 @@ use App\Http\Controllers\Admin\Upload\PackagesController;
 use App\Http\Controllers\Admin\Upload\ProductsController;
 use App\Http\Controllers\Admin\Upload\PaketWisataController;
 use App\Http\Controllers\Admin\Upload\MediaKontenController;
+use App\Http\Controllers\Admin\Upload\PostsController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
@@ -69,4 +71,21 @@ Route::middleware('auth')->group(function () {
 
     // Update profil
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // BLOG / POSTS
+    Route::get('/upload/posts/list',   [PostsController::class, 'index'])->name('pokdarwis.posts.index');
+    Route::post('/upload/posts',       [PostsController::class, 'store'])->name('pokdarwis.posts.store');
+    Route::put('/upload/posts/{post}', [PostsController::class, 'update'])->name('pokdarwis.posts.update');
+    Route::delete('/upload/posts/{post}', [PostsController::class, 'destroy'])->name('pokdarwis.posts.destroy');
+});
+
+
+//Ai Generate
+Route::post('/ai/generate', [AiGenerateController::class, 'generate'])
+     ->name('ai.generate');
+     
+
+     //profile
+     Route::prefix('pokdarwis')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('pokdarwis.profile');
 });

@@ -2,13 +2,17 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookIntentController;
 use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;   
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaketWisataController;
 use App\Http\Controllers\PokdarwisController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Pokdarwis;
+use Illuminate\Support\Facades\Storage;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
@@ -25,6 +29,7 @@ Route::get('/tour/{pokdarwis:slug}/paket/{paket:slug}/booking', [BookingControll
      ->name('booking.package');
 
      
+     
 // Detail pakai slug
 Route::get('/tour/{pokdarwis:slug}', [PokdarwisController::class, 'show'])
     ->name('pokdarwis.show');
@@ -39,6 +44,9 @@ Route::get('/tour/{id}', function ($id) {
 Route::get('/paket', [PaketWisataController::class, 'index'])->name('paket.index');
 Route::get('/paket/{paket:slug}', [PaketWisataController::class, 'show'])->name('paket.show');
 
+Route::post('/paket/{paket:slug}/book-intent', [BookIntentController::class, 'store'])
+    ->name('paket.book.intent');
+
 // Produk
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
@@ -50,6 +58,16 @@ Route::get('/gallery', [GalleryController::class, 'index'])
 Route::get('/blogarchive', [BlogController::class, 'index'])->name('posts.index');
 Route::get('/blogarchive/{slug}', [BlogController::class, 'show'])->name('posts.show');
 
+//Review
+Route::prefix('pokdarwis/{pokdarwis}')->group(function () {
+  Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store'); // kirim review
+});
+
+
+Route::get('/storage/{path}', function (string $path) {
+    abort_unless(Storage::disk('public')->exists($path), 404);
+    return response()->file(Storage::disk('public')->path($path));
+})->where('path', '.*');
 
 require __DIR__.'/auth.php';
 
@@ -64,50 +82,4 @@ require __DIR__.'/auth.php';
 
 
 
-// Route::get('/paket', [PaketWisataController::class, 'index'])->name('paket.index');
-// Route::get('/paket/{paket:slug}', [PaketWisataController::class, 'show'])->name('paket.show');
 
-
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-
-// //masih test, ubah Pokdarwis Return nya
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     Route::get('/dashboard/pokdarwis', function () {
-//         return view('pokdarwis');
-//     })->name('pokdarwis');
-    
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-
-// Route::middleware(['auth', 'verified'])->prefix('pokdarwis')->name('pokdarwis.')->group(function () {
-//     Route::get('/dashboard/pokdarwis', function () {
-//         return view('pokdarwis');
-//     })->name('dashboard');
-
-//     Route::resource('destinasi', DestinasiWisataController::class);
-//     Route::resource('product', ProductController::class);
-//     Route::resource('gallery', GalleryController::class);
-
-//     Route::middleware(['auth'])->match(['get','post'], '/ai/promo', AiGenerateController::class)
-//     ->name('ai.promo');
-// });
-
-// Route::middleware(['auth'])->match(['get','post'], '/ai/promo', AiGenerateController::class)
-//     ->name('ai.promo');
-
-//     Route::middleware(['auth'])
-//     ->match(['get','post'], '/ai/promo', AiGenerateController::class)
-//     ->name('ai.promo');
-
-
-// // Route::get('/pokdarwis/gallery/create', [GalleryController::class, 'create'])->name('pokdarwis.gallery.create');
-// // Route::post('/pokdarwis/gallery', [GalleryController::class, 'store'])->name('pokdarwis.gallery.store');
-
-// require __DIR__.'/auth.php';

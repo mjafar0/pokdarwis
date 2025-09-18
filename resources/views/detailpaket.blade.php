@@ -29,7 +29,7 @@
             <div class="package-price">
               <h6 class="price-list">
                 <span>{{ $paket->currency }} {{ number_format((float)$paket->harga, 0, ',', '.') }}</span>
-                / per person
+                {{-- / per person --}}
               </h6>
             </div>
           </div>
@@ -45,10 +45,10 @@
           </div>
 
           {{-- Gambar utama --}}
-          <figure class="single-package-image">
+          <figure class="single-package-images">
             <img src="{{ $paket->cover_url }}" alt="{{ $paket->nama_paket }}">
           </figure>
-
+<hr>
           <div class="package-content-detail">
             {{-- Overview / Deskripsi --}}
             <article class="package-overview">
@@ -95,20 +95,46 @@
 
           {{-- Related Images (fallback: pakai gambar cover berulang jika belum ada data galeri) --}}
           <div class="related-package">
-            <h3>RELATED IMAGES</h3>
-            <p>Dokumentasi terkait destinasi ini.</p>
-            @php
-              // kalau kamu sudah punya relasi galeri, ganti isi array ini
-              $relatedImages = $relatedImages ?? [$paket->cover_url, $paket->cover_url, $paket->cover_url];
-            @endphp
-            <div class="related-package-slide">
-              @foreach($relatedImages as $img)
-                <div class="related-package-item">
-                  <img src="{{ $img }}" alt="{{ $paket->nama_paket }}">
-                </div>
-              @endforeach
+          <h3>BOOK HERE</h3>
+          <p>Please Contact Us!</p>
+
+          @php
+            $pdw = $paket->pokdarwis;
+
+            // Build links (auto-format WA number 08xxxx -> 628xxxx)
+            $wa = !empty($pdw?->kontak)
+                ? 'https://wa.me/' . preg_replace('/^0/', '62', $pdw->kontak)
+                : null;
+
+            $links = array_filter([
+              'facebook'  => $pdw?->facebook ?? null,
+              'twitter'   => $pdw?->twitter ?? null,
+              'instagram' => $pdw?->instagram ?? null,
+              'website'   => $pdw?->website ?? null,
+              'whatsapp'  => $wa,
+            ]);
+          @endphp
+
+          @if(!empty($links))
+            <div class="socialgroup bookhere-socials">
+              <ul>
+                @foreach($links as $key => $url)
+                  <li>
+                    <a href="{{ $url }}" target="_blank">
+                      @switch($key)
+                        @case('facebook')  <i class="fab fa-facebook"></i>  @break
+                        @case('twitter')   <i class="fab fa-twitter"></i>   @break
+                        @case('instagram') <i class="fab fa-instagram"></i> @break
+                        @case('website')   <i class="fas fa-globe"></i>     @break
+                        @case('whatsapp')  <i class="fab fa-whatsapp"></i>  @break
+                      @endswitch
+                    </a>
+                  </li>
+                @endforeach
+              </ul>
             </div>
-          </div>
+          @endif
+        </div>
 
           {{-- Peta (isi sesuai komponenmu). Kalau belum ada lat/lng di tabel, kirim alamat saja / biarkan default --}}
           <x-package-map :address="$paket->lokasi" />

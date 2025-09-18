@@ -6,7 +6,7 @@
 @section('main')
   {{-- Feature image --}}
   <figure class="feature-image">
-    <img src="{{ $post->cover ? asset($post->cover) : asset('assets/images/noimage.jpg') }}" alt="">
+    <img src="{{ $post->cover_url ? asset($post->cover_url) : asset('assets/images/noimage.jpg') }}" alt="">
   </figure>
 
   {{-- Meta --}}

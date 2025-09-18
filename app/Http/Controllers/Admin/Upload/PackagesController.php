@@ -31,7 +31,7 @@ class PackagesController extends Controller
             'lokasi'           => ['nullable','string','max:255'],
             'harga'            => ['required','numeric','min:0'],
             'currency'         => ['nullable','string','max:10'], // default IDR
-            'img'              => ['nullable','image','mimes:jpg,jpeg,png,webp','max:3072'],
+            'img'              => ['nullable','image','mimes:jpg,jpeg,png,webp','max:5120'],
         ]);
 
         // ambil pokdarwis milik user (tabel pokdarwis punya user_id)

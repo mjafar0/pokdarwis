@@ -1940,6 +1940,23 @@ button.round-btn:active {
   }
 }
 
+.bookhere-socials ul{
+    list-style:none;           /* hilangkan bullet */
+    padding:0; margin:14px 0 0;
+    display:flex; gap:12px;    /* jarak antar ikon */
+    justify-content:center;    /* center */
+  }
+  .bookhere-socials li{ display:inline-block; }
+  .bookhere-socials a{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:40px; height:40px;   /* kotak kecil */
+    border:2px solid #2f5fb8;  /* biru */
+    border-radius:10px;        /* sedikit rounded */
+    color:#2f5fb8;
+    transition:.15s ease;
+  }
+  .bookhere-socials a:hover{ background:#2f5fb8; color:#fff; }
+
 .header-social li {
   
   margin: 0 5px;
@@ -4233,6 +4250,21 @@ button.round-btn:active {
   right: -3px;
   top: 0;
 }
+.single-package-images {
+    width: 100%;
+    height: 500px;          /* tinggi konsisten (ubah sesuai kebutuhan) */
+    overflow: hidden;
+    border-radius: 10px;    /* opsional, biar lebih halus */
+}
+
+.single-package-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* isi penuh, crop bagian luar */
+    object-position: center;/* fokus di tengah */
+    display: block;
+}
+
 .single-packge-wrap .package-meta ul li:first-child {
   padding-left: 0;
 }

@@ -43,8 +43,8 @@
                      <div class="col-lg-8 offset-lg-2 text-sm-center">
                         <div class="section-heading">
                            {{-- <h5 class="sub-title">OFFER & DISCOUNT</h5> --}}
-                           <h2 class="section-title">SPECIAL PRODUCT</h2>
-                           <p>Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque laudantium. Sit ornare mollitia tenetur, aptent.</p>
+                           <h2 class="section-title">BINTAN PRODUCTS</h2>
+                           <p>Discover a wide range of local products that showcase creativity, quality, and the spirit of the community. From everyday essentials to specialty items, each product is carefully made to bring value and authenticity to your experience.</p>
                         </div>
                      </div>
                   </div>

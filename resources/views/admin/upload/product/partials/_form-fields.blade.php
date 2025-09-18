@@ -25,7 +25,7 @@
     <label class="form-label">Gambar</label>
     <input type="file" name="img" class="form-control" accept="image/*"
            data-preview="{{ $edit ? 'previewEdit' : 'previewAdd' }}">
-    <div class="small text-muted mt-1">JPEG/PNG/WEBP maks 2MB.</div>
+    <div class="small text-muted mt-1">JPEG/PNG/WEBP maks 5MB.</div>
   </div>
 
   <div class="col-md-6">

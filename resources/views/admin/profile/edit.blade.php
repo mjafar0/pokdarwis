@@ -33,71 +33,122 @@
 
       {{-- ========== Kolom Kiri: Info Utama + Avatar ========== --}}
       <div class="col-lg-7">
-        <div class="card card-rounded">
-          <div class="card-body">
-            @if ($errors->any())
-              <div class="alert alert-danger">
-                <ul class="mb-0">
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
-            @endif
+  <div class="card card-rounded">
+    <div class="card-body">
+      @if ($errors->any())
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
 
-            {{-- Avatar (live preview) --}}
-            @php
-              $imgNow = $pokdarwis->img ? asset('storage/'.$pokdarwis->img) : asset('assets/images/default.png');
-            @endphp
-            <div class="mb-4">
-              <div class="d-flex align-items-center gap-3">
-                <img id="previewImg" src="{{ $imgNow }}" alt="avatar" class="avatar-preview">
-                <div>
-                  <label class="form-label mb-1">Foto Profil</label>
-                  <input type="file" name="img" id="f_img" class="form-control" accept="image/*">
-                  <div class="help">Maks 2MB. Format: JPG/PNG/WEBP.</div>
-                </div>
-              </div>
-            </div>
+      @php
+        $imgNow        = $pokdarwis->img         ? asset('storage/'.$pokdarwis->img)         : asset('assets/images/default.png');
+        $coverNow      = $pokdarwis->cover_img   ? asset('storage/'.$pokdarwis->cover_img)   : asset('assets/images/default-cover.jpg');
+        $contentImgNow = $pokdarwis->content_img ? asset('storage/'.$pokdarwis->content_img) : asset('assets/images/default.png');
 
-            <hr>
+        $videoNow = $pokdarwis->content_video
+                   ? (\Illuminate\Support\Str::startsWith($pokdarwis->content_video, ['http://','https://','//'])
+                        ? $pokdarwis->content_video
+                        : asset('storage/'.$pokdarwis->content_video))
+                   : null;
+      @endphp
 
-            {{-- Nama --}}
-            <div class="mb-3">
-              <label class="form-label">Nama Pokdarwis</label>
-              <input type="text" name="name_pokdarwis" class="form-control"
-                     value="{{ old('name_pokdarwis', $pokdarwis->name_pokdarwis) }}" required>
-            </div>
-
-            {{-- Slug (opsional) --}}
-            {{-- <div class="mb-3">
-              <label class="form-label">Slug (URL)</label>
-              <input type="text" name="slug" class="form-control"
-                     value="{{ old('slug', $pokdarwis->slug) }}">
-              <div class="help">Biarkan kosong untuk auto-generate dari nama.</div>
-            </div> --}}
-
-            {{-- Lokasi --}}
-            <div class="mb-3">
-              <label class="form-label">Lokasi</label>
-              <input type="text" name="lokasi" class="form-control"
-                     value="{{ old('lokasi', $pokdarwis->lokasi) }}">
-            </div>
-
-            {{-- Deskripsi --}}
-            <div class="mb-3">
-              <label class="form-label">Deskripsi</label>
-              <textarea name="deskripsi" rows="3" class="form-control">{{ old('deskripsi', $pokdarwis->deskripsi) }}</textarea>
-            </div>
-
-            {{-- Deskripsi 2 --}}
-            <div class="mb-0">
-              <label class="form-label">Deskripsi Tambahan (UI Wisatawan)</label>
-              <textarea name="deskripsi2" rows="3" class="form-control">{{ old('deskripsi2', $pokdarwis->deskripsi2) }}</textarea>
-            </div>
+      {{-- Avatar (live preview) --}}
+      <div class="mb-4">
+        <div class="d-flex align-items-center gap-3">
+          <img id="previewImg" src="{{ $imgNow }}" alt="avatar" class="avatar-preview">
+          <div>
+            <label class="form-label mb-1">Foto Profil</label>
+            <input type="file" name="img" id="f_img" class="form-control" accept="image/*">
+            <div class="help">Maks 5MB. Format: JPG/PNG/WEBP.</div>
           </div>
         </div>
       </div>
+
+      {{-- ====== Media Konten (BARU) ====== --}}
+      <div class="section-title">Media Konten</div>
+
+      {{-- Cover image --}}
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <img id="previewCover" src="{{ $coverNow }}" alt="cover" class="avatar-preview" style="width:160px;height:90px;border-radius:12px;">
+        <div>
+          <label class="form-label mb-1">Cover Image (banner)</label>
+          <input type="file" name="cover_img" id="f_cover" class="form-control" accept="image/*">
+          <div class="help">Header/hero, disarankan rasio 16:9.</div>
+        </div>
+      </div>
+
+      {{-- Content image --}}
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <img id="previewContentImg" src="{{ $contentImgNow }}" alt="content" class="avatar-preview" style="width:140px;height:140px;">
+        <div>
+          <label class="form-label mb-1">Content Image</label>
+          <input type="file" name="content_img" id="f_content_img" class="form-control" accept="image/*">
+          <div class="help">Gambar untuk bagian konten utama.</div>
+        </div>
+      </div>
+
+      {{-- Content video (URL atau file) --}}
+      <div class="mb-3">
+        <label class="form-label">Content Video (URL)</label>
+        <input type="url" name="content_video" class="form-control"
+               placeholder="https://www.youtube.com/watch?v=..."
+               value="{{ old('content_video', \Illuminate\Support\Str::startsWith($pokdarwis->content_video ?? '', ['http://','https://','//']) ? $pokdarwis->content_video : '') }}">
+        <div class="help">Isi URL YouTube/Vimeo. Jika URL diisi, file upload di bawah diabaikan.</div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Atau upload file video</label>
+        <input type="file" name="content_video_file" class="form-control" accept="video/mp4,video/webm,video/quicktime">
+        <div class="help">MP4/WEBM/MOV, maks 50MB.</div>
+
+        @if($videoNow)
+          <div class="mt-2">
+            <div class="help mb-1">Video saat ini:</div>
+            @if(\Illuminate\Support\Str::contains($videoNow, ['youtube.com','youtu.be','vimeo.com']))
+              <a href="{{ $videoNow }}" target="_blank">{{ $videoNow }}</a>
+            @else
+              <video controls style="width:100%;max-width:420px;border-radius:12px;">
+                <source src="{{ $videoNow }}" type="video/mp4">
+              </video>
+            @endif
+          </div>
+        @endif
+      </div>
+
+      <hr>
+
+      {{-- Nama --}}
+      <div class="mb-3">
+        <label class="form-label">Nama Pokdarwis</label>
+        <input type="text" name="name_pokdarwis" class="form-control"
+               value="{{ old('name_pokdarwis', $pokdarwis->name_pokdarwis) }}" required>
+      </div>
+
+      {{-- Lokasi --}}
+      <div class="mb-3">
+        <label class="form-label">Lokasi</label>
+        <input type="text" name="lokasi" class="form-control"
+               value="{{ old('lokasi', $pokdarwis->lokasi) }}">
+      </div>
+
+      {{-- Deskripsi --}}
+      <div class="mb-3">
+        <label class="form-label">Slogan</label>
+        <textarea name="deskripsi" rows="3" class="form-control">{{ old('deskripsi', $pokdarwis->deskripsi) }}</textarea>
+      </div>
+
+      {{-- Deskripsi 2 --}}
+      <div class="mb-0">
+        <label class="form-label">Deskripsi Tempat</label>
+        <textarea name="deskripsi2" rows="3" class="form-control">{{ old('deskripsi2', $pokdarwis->deskripsi2) }}</textarea>
+      </div>
+    </div>
+  </div>
+</div>
 
       {{-- ========== Kolom Kanan: Kontak & Media Sosial ========== --}}
       <div class="col-lg-5">
@@ -108,10 +159,15 @@
             <div class="section-title">Kontak</div>
 
             <div class="mb-3">
-              <label class="form-label">Kontak (PIC)</label>
-              <input type="text" name="kontak" class="form-control"
-                     value="{{ old('kontak', $pokdarwis->kontak) }}">
+              <label class="form-label">Nomor WhatsApp</label>
+              <input type="text"
+                    name="kontak"
+                    class="form-control"
+                    placeholder="Contoh: 08123456789"
+                    value="{{ old('kontak', $pokdarwis->kontak) }}">
+              <div class="form-text">Gunakan format angka, misalnya <b>08123456789</b>.</div>
             </div>
+
 
             <div class="mb-3">
               <label class="form-label">Phone</label>
@@ -157,7 +213,37 @@
             </div>
           </div>
         </div>
+{{-- Kunjungan Wisatawan (Additive) --}}
+<div class="card card-rounded mb-4">
+  <div class="card-body">
+    <div class="section-title">Kunjungan Wisatawan</div>
 
+    @php
+      $seed   = (int) ($pokdarwis->visit_count_manual ?? 0);
+  $clicks = (int) ($pokdarwis->visit_count_auto ?? 0);
+  $total  = $seed + $clicks;
+    @endphp
+
+    <div class="mb-3">
+      <label class="form-label">Kunjungan Wisatawan</label>
+      <input type="number" name="visit_count_manual" class="form-control"
+             value="{{ old('visit_count_manual', $seed) }}" min="0" step="1" />
+      <div class="form-text">Isi angka kunjungan yang dimiliki Pokdarwis (data historis).</div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col">
+        <label class="form-label d-block">Kunjungan</label>
+        <div class="help"><b>{{ number_format($clicks,0,',','.') }}</b></div>
+      </div>
+      <div class="col">
+        <label class="form-label d-block">Total Saat Ini</label>
+        <div class="help"><b>{{ number_format($total,0,',','.') }}</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+        
       </div>
     </div>
 
@@ -185,4 +271,25 @@
     });
   })();
 </script>
+
+<script>
+  (function(){
+    const bindPreview = (inputId, imgId) => {
+      const input = document.getElementById(inputId);
+      const img   = document.getElementById(imgId);
+      if (!input || !img) return;
+      input.addEventListener('change', (e)=>{
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => { img.src = ev.target.result; };
+        reader.readAsDataURL(file);
+      });
+    };
+    bindPreview('f_img', 'previewImg');
+    bindPreview('f_cover', 'previewCover');
+    bindPreview('f_content_img', 'previewContentImg');
+  })();
+</script>
+
 @endsection

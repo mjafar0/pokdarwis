@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage; 
 
 class PaketWisata extends Model
 {
@@ -44,15 +45,25 @@ class PaketWisata extends Model
     // Accessor: URL gambar siap pakai di view/komponen
     public function getCoverUrlAttribute()
     {
-        $img = $this->img ?: 'assets/images/img1.jpg';
+        // default fallback kalau img null
+        $fallback = asset('assets/images/img1.jpg');
 
+        $img = $this->img;
+        if (!$img) return $fallback;
+
+        // Jika sudah absolute URL, langsung pakai
         if (Str::startsWith($img, ['http://','https://','//'])) {
             return $img;
         }
-        if (Str::startsWith($img, ['paket/'])) { // hasil upload ke disk 'public'
-            return asset('storage/'.$img);
+
+        // Kalau path relatif (contoh: "products/...", "paket/...", "images/xyz.webp")
+        // coba lewat disk 'public' dulu
+        if (Storage::disk('public')->exists($img)) {
+            return Storage::url($img); // -> /storage/<path>
         }
-        return asset($img); // asumsi path ke public/
+
+        // Jika bukan file di storage, anggap itu asset di public/ (mis: "assets/images/...")
+        return asset($img) ?: $fallback;
     }
 
     public function getImageUrlAttribute()

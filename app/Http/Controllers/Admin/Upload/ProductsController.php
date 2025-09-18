@@ -11,6 +11,9 @@ use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
+    /** semua prefix folder yang kita anggap ada di disk 'public' */
+    private array $publicPrefixes = ['products/', 'paket/', 'pokdarwis/', 'posts/'];
+
     public function index()
     {
         $pokdarwis = Auth::user()->pokdarwis;
@@ -20,7 +23,8 @@ class ProductsController extends Controller
             ->latest('id')
             ->paginate(12);
 
-        return view('admin.upload.product.index', compact('products'));
+        // kirim juga $pokdarwis biar dipakai di blade (untuk AI prompt, dsb)
+        return view('admin.upload.product.index', compact('products', 'pokdarwis'));
     }
 
     // CREATE (ADD)
@@ -31,15 +35,15 @@ class ProductsController extends Controller
             'harga_product'   => 'required|numeric|min:0',
             'deskripsi'       => 'nullable|string',
             'detail_tambahan' => 'nullable|string',
-            'img'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'img'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         $pokdarwis = Auth::user()->pokdarwis;
         abort_unless($pokdarwis, 403, 'Profil Pokdarwis belum terdaftar.');
-
         $data['pokdarwis_id'] = $pokdarwis->id;
 
         if ($request->hasFile('img')) {
+            // simpan ke storage/app/public/products → "products/xxxxx.jpg"
             $data['img'] = $request->file('img')->store('products', 'public');
         }
 
@@ -54,7 +58,7 @@ class ProductsController extends Controller
         return view('admin.upload.product.uploadProduct'); // form input
     }
 
-    //Update
+    // UPDATE
     public function update(Request $request, Product $product)
     {
         // pastikan produk milik pokdarwis yang login
@@ -66,17 +70,28 @@ class ProductsController extends Controller
             'harga_product'    => 'sometimes|required|numeric|min:0',
             'deskripsi'        => 'sometimes|nullable|string',
             'detail_tambahan'  => 'sometimes|nullable|string',
-            'img'              => 'sometimes|nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'img'              => 'sometimes|nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        // jika ada gambar baru, simpan & hapus lama (kalau dari disk public/products)
         if ($request->hasFile('img')) {
-            if ($product->img && str_starts_with($product->img, 'products/')) {
-                Storage::disk('public')->delete($product->img);
+            // hapus file lama jika ada
+            $old = $product->img;
+            if ($old) {
+                // a) file lama ada di disk 'public' (storage/app/public/...)
+                if (Str::startsWith($old, $this->publicPrefixes) && Storage::disk('public')->exists($old)) {
+                    Storage::disk('public')->delete($old);
+                }
+                // b) kalau dulu sempat disimpan ke public/ (akibat move(public_path(...)))
+                $publicPath = public_path($old);
+                if (Str::startsWith($old, $this->publicPrefixes) && is_file($publicPath)) {
+                    @unlink($publicPath);
+                }
             }
+
+            // simpan baru ke disk 'public'
             $data['img'] = $request->file('img')->store('products', 'public');
         } else {
-            unset($data['img']); // jangan menimpa img jika tidak diubah
+            unset($data['img']); // jangan menimpa kolom img jika tidak mengubah
         }
 
         $product->update($data);
@@ -84,13 +99,20 @@ class ProductsController extends Controller
         return back()->with('success', 'Produk berhasil diperbarui.');
     }
 
-     // DELETE
+    // DELETE
     public function destroy(Product $product)
     {
         abort_unless($product->pokdarwis_id === optional(Auth::user()->pokdarwis)->id, 403);
 
-        if ($product->img && Str::startsWith($product->img, 'products/')) {
-            Storage::disk('public')->delete($product->img);
+        $old = $product->img;
+        if ($old) {
+            if (Str::startsWith($old, $this->publicPrefixes) && Storage::disk('public')->exists($old)) {
+                Storage::disk('public')->delete($old);
+            }
+            $publicPath = public_path($old);
+            if (Str::startsWith($old, $this->publicPrefixes) && is_file($publicPath)) {
+                @unlink($publicPath);
+            }
         }
 
         $product->delete();

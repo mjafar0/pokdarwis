@@ -25,24 +25,22 @@ class Product extends Model
 
     public function getImageUrlAttribute()
     {
-         $img = $this->img;
+        $img = $this->img;
 
     if (!$img) {
         return asset('assets/images/noimage.jpg');
     }
 
-    // Jika absolute URL
     if (Str::startsWith($img, ['http://','https://','//'])) {
         return $img;
     }
 
-    // Jika file hasil upload di disk 'public' => 'products/...'
-    if (Str::startsWith($img, ['products/', 'paket/'])) {
-        return asset('storage/'.$img);
+    if (Str::startsWith($img, ['products/','paket/','pokdarwis/','posts/'])) {
+        return asset('storage/'.$img);   // → /storage/....
     }
 
-    // Jika path ke public/ (contoh: 'assets/images/...') tetap dilayani
-    return asset($img);
+    return asset($img); // fallback: file di public/
+
     }
     
 }

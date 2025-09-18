@@ -66,7 +66,7 @@
             <div class="col-md-6">
                 <label class="form-label">Cover (Gambar)</label>
                 <input type="file" name="img" accept="image/*" class="form-control">
-                <small class="text-muted">JPEG/PNG/WEBP maks 3MB.</small>
+                <small class="text-muted">JPEG/PNG/WEBP maks 5MB.</small>
             </div>
 
             <div class="col-12">

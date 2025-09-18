@@ -53,10 +53,25 @@ class MediaKonten extends Model
         return asset('storage/'.$p);
     }
 
+    public function scopePhotos($q)
+    {
+        return $q->where('tipe_konten', 'foto');
+    }
+
+
     // optional: thumbnail (pakai file yang sama dahulu)
     public function getThumbUrlAttribute(): string
     {
         return $this->url;
+    }
+
+    public function toGalleryItem(): array
+    {
+        return [
+            'src'  => $this->url,
+            'alt'  => $this->judul_konten ?: 'Photo',
+            'type' => 'foto',
+        ];
     }
 
     // scopes

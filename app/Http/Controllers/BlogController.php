@@ -35,6 +35,6 @@ class BlogController extends Controller
             ->take(3)
             ->get();
 
-        return view('blogsingle', compact('post','recentPosts'));
+        return view('blogSingle', compact('post','recentPosts'));
     }
 }

@@ -57,10 +57,15 @@
       @foreach($products as $p)
         <div class="col-12 col-sm-6 col-lg-4">
           <div class="card h-100 border-0 shadow-sm product-card">
-            <div class="position-relative rounded-top overflow-hidden" style="aspect-ratio:16/10;background:#f7f7f9">
-              <img src="{{ $p->image_url }}" alt="{{ $p->name_product }}" class="w-100 h-100" style="object-fit:cover;">
-              <span class="price-chip shadow-sm">Rp {{ number_format($p->harga_product,0,',','.') }}</span>
-            </div>
+            <div class="position-relative rounded-top overflow-hidden"
+     style="aspect-ratio:16/10;background:#f7f7f9">
+  <img src="{{ $p->image_url }}"
+     alt="{{ $p->name_product }}"
+     class="w-100 h-100" style="object-fit:cover;"
+     onerror="this.onerror=null;this.src='{{ asset('assets/images/noimage.jpg') }}'">
+
+  <span class="price-chip shadow-sm">Rp {{ number_format($p->harga_product,0,',','.') }}</span>
+</div>
 
             <div class="card-body">
               <h5 class="card-title mb-1 text-truncate" title="{{ $p->name_product }}">{{ $p->name_product }}</h5>
@@ -76,6 +81,7 @@
                 <button
                   class="btn btn-outline-primary btn-sm flex-fill btn-edit"
                   data-id="{{ $p->id }}"
+                  {{-- data-product-id="{{ $products_id }}" --}}
                   data-name="{{ $p->name_product }}"
                   data-harga="{{ $p->harga_product }}"
                   data-deskripsi="{{ $p->deskripsi }}"
@@ -107,63 +113,84 @@
   
 
   {{-- Modal Add Product --}}
-  <div class="modal fade" id="modalAddProduct" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content border-0 shadow-lg">
-        <div class="modal-header">
-          <h5 class="modal-title"><i class="fa-solid fa-box me-2"></i>Tambah Produk</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+<div class="modal fade" id="modalAddProduct" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-box me-2"></i>Tambah Produk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
 
-        <form action="{{ route('pokdarwis.product.store') }}" method="POST" enctype="multipart/form-data">
-          @csrf
-          <div class="modal-body">
-            <div class="row g-3">
-              <div class="col-md-8">
-                <label class="form-label">Nama Produk <span class="text-danger">*</span></label>
-                <input type="text" name="name_product" class="form-control" placeholder="Contoh: Madu Hutan 250ml" required>
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
-                <input type="number" min="0" name="harga_product" class="form-control" placeholder="25000" required>
-              </div>
+      <form action="{{ route('pokdarwis.product.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label">Nama Produk <span class="text-danger">*</span></label>
+              <input type="text" name="name_product" class="form-control" placeholder="Contoh: Madu Hutan 250ml" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
+              <input type="number" min="0" name="harga_product" class="form-control" placeholder="25000" required>
+            </div>
 
-              <div class="col-12">
-                <label class="form-label">Deskripsi</label>
-                <textarea name="deskripsi" rows="3" class="form-control" placeholder="Ceritakan singkat tentang produk..."></textarea>
+            {{-- === AI Generate (ADD only) === --}}
+            <input type="hidden" id="createPokdarwisId"
+                   value="{{ $pokdarwis->id ?? (auth()->user()->pokdarwis_id ?? (optional(\App\Models\Pokdarwis::where('user_id', auth()->id())->first())->id ?? '')) }}">
+            <div class="col-12">
+              <label class="form-label d-flex justify-content-between align-items-center">
+                <span>AI Prompt untuk Deskripsi</span>
+                <small class="text-muted">contoh: "buatkan deskripsi promosi tentang madu hutan liar aroma floral"</small>
+              </label>
+              <div class="input-group">
+                <input type="text" id="aiPromptCreate" class="form-control" placeholder="Tulis prompt AI di sini...">
+                <button type="button" id="btnGenCreate" class="btn btn-outline-primary">
+                  <span class="spinner-border spinner-border-sm me-1 d-none" id="genSpinCreate" role="status" aria-hidden="true"></span>
+                  Generate
+                </button>
               </div>
+            </div>
+            {{-- /AI Generate --}}
 
-              <div class="col-12">
-                <label class="form-label">Detail Tambahan</label>
-                <textarea name="detail_tambahan" rows="2" class="form-control" placeholder="Komposisi, ukuran, catatan, dll. (opsional)"></textarea>
-              </div>
+            {{-- Deskripsi (editable) --}}
+            <div class="col-12">
+              <label class="form-label">Deskripsi</label>
+              <textarea name="deskripsi" id="deskripsiCreate" rows="3" class="form-control"
+                        placeholder="Ceritakan singkat tentang produk..."></textarea>
+            </div>
 
-              <div class="col-md-6">
-                <label class="form-label">Gambar Produk</label>
-                <input type="file" name="img" class="form-control" accept="image/*" onchange="previewAdd(this)">
-                <div class="form-text">PNG/JPG/WEBP maks 3MB.</div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Preview</label>
-                <div class="preview-box">
-                  <img id="imgPreviewAdd" src="{{ asset('assets/images/site-logo.png') }}" alt="preview"
-                      style="max-height:100%;max-width:100%;object-fit:contain;">
-                </div>
+            <div class="col-12">
+              <label class="form-label">Detail Tambahan</label>
+              <textarea name="detail_tambahan" rows="2" class="form-control"
+                        placeholder="Komposisi, ukuran, catatan, dll. (opsional)"></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Gambar Produk</label>
+              <input type="file" name="img" class="form-control" accept="image/*" onchange="previewAdd(this)">
+              <div class="form-text">PNG/JPG/WEBP maks 5MB.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Preview</label>
+              <div class="preview-box">
+                <img id="imgPreviewAdd" src="{{ asset('assets/images/site-logo.png') }}" alt="preview"
+                     style="max-height:100%;max-width:100%;object-fit:contain;">
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-            <button class="btn btn-primary">
-              <i class="fa-solid fa-floppy-disk me-1"></i> Simpan
-            </button>
-          </div>
-        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-primary">
+            <i class="fa-solid fa-floppy-disk me-1"></i> Simpan
+          </button>
+        </div>
+      </form>
 
-      </div>
     </div>
   </div>
+</div>
 
   {{-- Modal Edit Product --}}
 <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
@@ -243,7 +270,7 @@
 
 @push('scripts')
 <script>
-  // isi form edit saat tombol Edit diklik
+  // isi form edit (punyamu yang existing)
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.btn-edit').forEach(btn => {
       btn.addEventListener('click', function () {
@@ -258,7 +285,7 @@
     });
   });
 
-  // Preview khusus ADD
+  // Preview ADD
   function previewAdd(input) {
     const img = document.getElementById('imgPreviewAdd');
     if (input.files && input.files[0]) {
@@ -270,7 +297,7 @@
     }
   }
 
-  // Preview khusus EDIT
+  // Preview EDIT
   function previewEdit(input) {
     const img = document.getElementById('imgPreviewEdit');
     if (input.files && input.files[0]) {
@@ -279,9 +306,58 @@
       reader.readAsDataURL(input.files[0]);
     }
   }
+
+  // === AI Generate khusus ADD ===
+  (function(){
+    const btn   = document.getElementById('btnGenCreate');
+    const spin  = document.getElementById('genSpinCreate');
+    const promptEl = document.getElementById('aiPromptCreate');
+    const descEl   = document.getElementById('deskripsiCreate');
+    const pdwEl    = document.getElementById('createPokdarwisId');
+
+    if (!btn || !promptEl || !descEl || !pdwEl) return;
+
+    btn.addEventListener('click', async () => {
+      const prompt = (promptEl.value || '').trim();
+      const pokdarwisId = pdwEl.value || '';
+
+      if (!prompt) { alert('Prompt AI tidak boleh kosong.'); return; }
+      if (!pokdarwisId) { alert('Konteks pokdarwis tidak ditemukan. Silakan login sebagai pokdarwis.'); return; }
+
+      btn.disabled = true; spin.classList.remove('d-none');
+
+      try {
+        const resp = await fetch("{{ route('ai.generate') }}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          },
+          body: JSON.stringify({
+            prompt: prompt,
+            pokdarwis_id: pokdarwisId,   // ADD hanya ini yang wajib
+            product_id: null,
+            language: 'id'
+          })
+        });
+
+        const data = await resp.json().catch(() => null);
+        if (!resp.ok || !data?.ok) throw new Error(data?.message || `HTTP ${resp.status}`);
+
+        // masuk ke Deskripsi (editable)
+        descEl.value = data.text;
+      } catch (e) {
+        alert(e.message || 'Gagal generate deskripsi.');
+        console.error(e);
+      } finally {
+        btn.disabled = false; spin.classList.add('d-none');
+      }
+    });
+  })();
+  // === /AI Generate (ADD) ===
 </script>
-<script src="{{ asset('assets/vendors/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 @endpush
+
 
 @push('styles')
 <style>

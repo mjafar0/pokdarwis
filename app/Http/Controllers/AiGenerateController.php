@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AiGenerate;
 use Illuminate\Http\Request;
+use App\Models\Pokdarwis;
 use Illuminate\Support\Facades\Http;
+use App\Models\Product;
+
 use Illuminate\Validation\Rule;
 
 class AiGenerateController extends Controller
@@ -12,6 +15,93 @@ class AiGenerateController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function generate(Request $req)
+    {
+        $data = $req->validate([
+            'prompt'        => 'required|string|min:5',
+            'pokdarwis_id'  => 'nullable|integer',
+            'product_id'    => 'nullable|integer',
+            'language'      => 'nullable|in:id,en'
+        ]);
+
+        $pokdarwisId = $data['pokdarwis_id'] ?? null;
+
+        if (!$pokdarwisId && !empty($data['product_id'])) {
+        $pokdarwisId = Product::whereKey($data['product_id'])->value('pokdarwis_id');
+        }
+
+        if (!$pokdarwisId && $req->user()) {
+        // a) bila users.pokdarwis_id memang ada
+        if (isset($req->user()->pokdarwis_id)) {
+            $pokdarwisId = $req->user()->pokdarwis_id;
+        }
+        // b) atau mapping pokdarwis.user_id = users.id
+        if (!$pokdarwisId) {
+            $pokdarwisId = Pokdarwis::where('user_id', $req->user()->id)->value('id');
+        }
+    }
+
+        if (!$pokdarwisId) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'pokdarwis_id tidak boleh kosong. Kirimkan product_id yang valid atau pokdarwis_id.'
+            ], 422);
+        }
+
+
+        $lang   = $data['language'] ?? 'id';
+        $system = $lang === 'id'
+            ? 'Kamu copywriter pariwisata/UMKM. Tulis 50–120 kata, persuasif dan jujur, tanpa emoji & tanpa kontak. Satu paragraf.'
+            : 'You are a tourism/SME copywriter. Write 50–120 words, persuasive and honest, no emojis or contact info. One paragraph.';
+
+        $apiKey = config('services.openai.key', env('OPENAI_API_KEY'));
+        $model  = config('services.openai.model', env('OPENAI_MODEL', 'gpt-4o'));
+
+        try {
+            $resp = Http::withToken($apiKey)
+                ->timeout(40)
+                // jika test di Windows/XAMPP & kena SSL, sementara bisa:
+                // ->withOptions(['verify' => false])
+                ->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => $model,
+                    'messages' => [
+                        ['role' => 'system', 'content' => $system],
+                        ['role' => 'user',   'content' => $data['prompt']],
+                    ],
+                    'temperature' => 0.7,
+                    'max_tokens'  => 300,
+                ]);
+
+            if (!$resp->ok()) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => $resp->json('error.message') ?? 'HTTP '.$resp->status(),
+                ], 500);
+            }
+
+            $text = trim($resp->json('choices.0.message.content') ?? '');
+
+            $row = AiGenerate::create([
+                'prompt_text'  => $data['prompt'],
+                'result_text'  => $text,
+                // 'pokdarwis_id' => $data['pokdarwis_id'] ?? null,
+                'pokdarwis_id' => $pokdarwisId,
+                'product_id'   => $data['product_id'] ?? null,
+            ]);
+
+            return response()->json([
+                'ok'       => true,
+                'text'     => $text,
+                'saved_id' => $row->id,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json(['ok' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    // 
 
      public function __invoke(Request $req)
     {

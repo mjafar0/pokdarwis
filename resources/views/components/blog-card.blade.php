@@ -1,6 +1,6 @@
 @props([
-  'image' => 'assets/images/img4.jpg',
-  'category' => 'TOUR',
+  'cover' => 'assets/images/img4.jpg',
+  'category' => 'BLOG',
   'title' => 'Untitled',
   'excerpt' => 'Deskripsi singkat...',
   'url' => '#',
@@ -9,7 +9,7 @@
 
 <article class="post">
   <figure class="featured-post">
-    <img src="{{ $image }}" alt="">
+    <img src="{{ $cover }}" alt="">
   </figure>
 
   <div class="post-content">

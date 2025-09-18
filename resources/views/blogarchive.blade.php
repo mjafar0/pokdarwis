@@ -8,8 +8,8 @@
     @forelse($posts as $post)
       <div class="grid-item col-md-6">
         <x-blog-card
-          :image="$post->cover ? asset($post->cover) : asset('assets/images/noimage.jpg')"
-          :category="'TOUR'"
+          :cover="$post->cover_url"
+          :category="'BLOG'"
           :title="$post->title"
           :excerpt="$post->excerpt"
           :url="route('posts.show', $post->slug)"

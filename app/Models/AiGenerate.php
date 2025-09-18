@@ -17,6 +17,7 @@ class AiGenerate extends Model
         'pokdarwis_id',
         'created_at',
         'updated_at',
+        'product_id'
     ];
 
     // protected $table = 'ai_generate';
