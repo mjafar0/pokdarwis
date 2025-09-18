@@ -68,6 +68,7 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
           @endforelse
         </ul>
       </li>
+<<<<<<< HEAD
       @endif
 
       <li class="menu-item-has-children">
@@ -94,6 +95,8 @@ $isTourCurrent = function ($pd) use ($pokdarwis) {
         </ul>
       </li>
       
+=======
+>>>>>>> bb4134d6635eaa325ebdde47833152df4ea0610a
       @if (auth()->user()->role === 'admin')
       <li class="menu-item-has-children {{ $isActive('pages') }}">
         <a href="#">Settings</a>
